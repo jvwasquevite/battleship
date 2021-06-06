@@ -14,8 +14,13 @@ public class Jogo extends JFrame implements ActionListener {
     // Labels
     private JLabel labelTitulo = new JLabel("Bem vindo ao Jogo");
     private JLabel labelSubtitulo = new JLabel("Destrua as 4 embarcações do oponente.");
+    private JLabel labelTimer = new JLabel("00:00");
     
     // Botoes
+    private JButton dica = new JButton("Solicitar Dica");
+    private JButton sair = new JButton("Sair do Jogo");
+    
+    // Botoes das embarcacoes
     private JButton tiroPortaAviao = new JButton("Tiro porta-avião");
     private JButton tiroUnico = new JButton("Tiro unico");
     private JButton tiroDuplo = new JButton("Tiro duplo");
@@ -50,7 +55,18 @@ public class Jogo extends JFrame implements ActionListener {
         labelSubtitulo.setBounds(30, 55, 280, 15);
         contentPane.add(labelSubtitulo);
         
-        // Botões de tiros
+        // Botoes
+        dica.setBounds(30, 520, 150, 30);
+        dica.setFont(new Font("Arial", Font.PLAIN, 12));
+        dica.addActionListener(this);		
+        contentPane.add(dica);
+        
+        sair.setBounds(820, 520, 150, 30);
+        sair.setFont(new Font("Arial", Font.PLAIN, 12));
+        sair.addActionListener(this);		
+        contentPane.add(sair);
+        
+        // Botoes de tiros
         tiroPortaAviao.setBounds(340, 20, 150, 36);
         tiroPortaAviao.setFont(new Font("Arial", Font.PLAIN, 12));
         tiroPortaAviao.addActionListener(this);		
@@ -71,7 +87,7 @@ public class Jogo extends JFrame implements ActionListener {
         tiroEstrela.addActionListener(this);		
         contentPane.add(tiroEstrela);
         
-        // Descricao botoes
+        // Descricao dos botoes
         labelPortaAviao.setFont(new Font("Arial", Font.ITALIC, 11));
         labelPortaAviao.setBounds(340, 60, 280, 15);
         contentPane.add(labelPortaAviao);
@@ -88,12 +104,39 @@ public class Jogo extends JFrame implements ActionListener {
         labelEstrela.setBounds(820, 60, 280, 15);
         contentPane.add(labelEstrela);
         
+        // Timer
+        labelTimer.setFont(new Font("Arial", Font.BOLD, 18));
+        labelTimer.setBounds(480, 525, 280, 15);
+        contentPane.add(labelTimer);
+        
         // Centralizando a tela
         setLocationRelativeTo(null);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        // Evento para sair do jogo
+        if (e.getSource() == sair){
+            Object[] options = {"Reiniciar jogo", "Novo jogo"};
+           
+            int result = JOptionPane.showOptionDialog(null,"O que deseja fazer?", "Sair do jogo",
+            JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+            
+            switch (result) {
+                    case 0:
+                        // Reiniar jogo
+                        System.out.println("Reiniciar jogo");
+                        break;
+                    case 1:
+                        // Sair do jogo
+                        SwingUtilities.invokeLater(() -> {
+                            this.dispose();
+
+                            TelaInicio inicio = new TelaInicio();
+                            inicio.setVisible(true);
+                        });
+                        break;
+            }
+        }
     }
 }

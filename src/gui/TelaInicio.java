@@ -92,6 +92,7 @@ public class TelaInicio extends JFrame implements ActionListener {
                 });
                 
                 caixaDeTexto.setText("");
+                this.dispose();
             }
             
         }
@@ -111,6 +112,7 @@ public class TelaInicio extends JFrame implements ActionListener {
                 });
                 
                 caixaDeTexto.setText("");
+                this.dispose();
             }
             
         }
