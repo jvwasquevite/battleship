@@ -11,6 +11,10 @@ public class Jogo extends JFrame implements ActionListener {
     // Instanciando o painel do jogo
     private JPanel contentPane = new JPanel();
     
+    // Instanciando os tabuleiros
+    private Tabuleiro tabuleiroJogador = new Tabuleiro();
+    private Tabuleiro tabuleiroComputador = new Tabuleiro();
+    
     // Labels
     private JLabel labelTitulo = new JLabel("Bem vindo ao Jogo");
     private JLabel labelSubtitulo = new JLabel("Destrua as 4 embarcações do oponente.");
@@ -38,7 +42,7 @@ public class Jogo extends JFrame implements ActionListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         // Estilização do painel
-        setBounds(100, 100, 1000, 600);
+        setBounds(100, 100, 1000, 630);
         contentPane.setBorder(null);
         contentPane.setLayout(null);
         
@@ -56,12 +60,12 @@ public class Jogo extends JFrame implements ActionListener {
         contentPane.add(labelSubtitulo);
         
         // Botoes
-        dica.setBounds(30, 520, 150, 30);
+        dica.setBounds(30, 540, 150, 30);
         dica.setFont(new Font("Arial", Font.PLAIN, 12));
         dica.addActionListener(this);		
         contentPane.add(dica);
         
-        sair.setBounds(820, 520, 150, 30);
+        sair.setBounds(820, 540, 150, 30);
         sair.setFont(new Font("Arial", Font.PLAIN, 12));
         sair.addActionListener(this);		
         contentPane.add(sair);
@@ -106,8 +110,15 @@ public class Jogo extends JFrame implements ActionListener {
         
         // Timer
         labelTimer.setFont(new Font("Arial", Font.BOLD, 18));
-        labelTimer.setBounds(480, 525, 280, 15);
+        labelTimer.setBounds(475, 550, 280, 15);
         contentPane.add(labelTimer);
+        
+        // Insere os tabuleiros
+        tabuleiroJogador.setBounds(0, 90, 500, 500);
+        contentPane.add(tabuleiroJogador);
+        
+        tabuleiroComputador.setBounds(500, 90, 500, 500);
+        contentPane.add(tabuleiroComputador);
         
         // Centralizando a tela
         setLocationRelativeTo(null);

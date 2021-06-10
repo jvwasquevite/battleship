@@ -12,6 +12,9 @@ public class DefinirJogo extends JFrame implements ActionListener {
     // Instanciando o painel da tela Definir Jogo
     private JPanel contentPane = new JPanel();
     
+    // Instanciando o tabuleiro
+    private Tabuleiro tabuleiro = new Tabuleiro();
+    
     // Labels
     private JLabel labelTitulo = new JLabel("Defina o seu Jogo");
     private JLabel labelSubtitulo = new JLabel("Insira as embarcações em seu tabuleiro.");
@@ -66,27 +69,30 @@ public class DefinirJogo extends JFrame implements ActionListener {
         // Botões de selecao das embarcacoes
         portaAviao.setBounds(770, 180, 200, 50);
         portaAviao.setIcon(new ImageIcon(DefinirJogo.class.getResource("/gui/imagens/portaaviao.png")));
-        portaAviao.setBackground(Color.cyan);
+
         portaAviao.addActionListener(this);
         contentPane.add(portaAviao);
         
         submarino.setBounds(770, 240, 100, 50);
         submarino.setIcon(new ImageIcon(DefinirJogo.class.getResource("/gui/imagens/submarino.png")));
-        submarino.setBackground(Color.cyan);
+
         submarino.addActionListener(this);
         contentPane.add(submarino);
         
         navioEscolta.setBounds(770, 300, 150, 50);
         navioEscolta.setIcon(new ImageIcon(DefinirJogo.class.getResource("/gui/imagens/navioescolta.png")));
-        navioEscolta.setBackground(Color.cyan);
+
         navioEscolta.addActionListener(this);
         contentPane.add(navioEscolta);
         
         aviaoCaca.setBounds(770, 360, 100, 50);
         aviaoCaca.setIcon(new ImageIcon(DefinirJogo.class.getResource("/gui/imagens/aviaocaca.png")));
-        aviaoCaca.setBackground(Color.cyan);
         aviaoCaca.addActionListener(this);
         contentPane.add(aviaoCaca);
+        
+        // Insere os tabuleiro
+        tabuleiro.setBounds(30, 90, 500, 500);
+        contentPane.add(tabuleiro);
         
         // Centralizando a tela
         setLocationRelativeTo(null);
