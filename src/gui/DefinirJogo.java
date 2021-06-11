@@ -1,19 +1,24 @@
 package gui;
 
-import java.awt.Color;
+import java.awt.Dimension;
 import javax.swing.*;
 
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class DefinirJogo extends JFrame implements ActionListener {
-    
-    // Instanciando o painel da tela Definir Jogo
+    // Instanciando os paineis
     private JPanel contentPane = new JPanel();
+    private JPanel grid = new JPanel();
     
-    // Instanciando o tabuleiro
-    private Tabuleiro tabuleiro = new Tabuleiro();
+    // Vetores do tabuleiro e dos botoes das embarcacoes
+    private JButton[][] botoes = new JButton[10][10];
+    private JButton[] botoesEmbarcacoes = new JButton[4];
+    
+    // Controla qual embarcacao esta selecionada
+    private int embarcacaoSelecionada;
     
     // Labels
     private JLabel labelTitulo = new JLabel("Defina o seu Jogo");
@@ -23,20 +28,13 @@ public class DefinirJogo extends JFrame implements ActionListener {
     private JButton iniciarJogo = new JButton("Iniciar Jogo");
     private JButton voltar = new JButton("Voltar");
     
-    // Botoes das embarcacoes
-    private JButton portaAviao = new JButton();
-    private JButton submarino = new JButton();
-    private JButton navioEscolta = new JButton();
-    private JButton aviaoCaca = new JButton();
-    
-    
     public DefinirJogo() {
         setTitle("Batalha Naval em Java ➜ Definir Jogo");
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         // Estilização do painel
-        setBounds(100, 100, 1000, 600);
+        setBounds(100, 100, 830, 650);
         contentPane.setBorder(null);
         contentPane.setLayout(null);
         
@@ -54,54 +52,76 @@ public class DefinirJogo extends JFrame implements ActionListener {
         contentPane.add(labelSubtitulo);
         
         // Botão de Iniciar Jogo
-        iniciarJogo.setBounds(820, 30, 150, 36);
+        iniciarJogo.setBounds(630, 30, 150, 36);
         iniciarJogo.setFont(new Font("Arial", Font.PLAIN, 12));
         iniciarJogo.setEnabled(false);
         iniciarJogo.addActionListener(this);		
         contentPane.add(iniciarJogo);
         
         // Botão de voltar
-        voltar.setBounds(660, 30, 150, 36);
+        voltar.setBounds(460, 30, 150, 36);
         voltar.setFont(new Font("Arial", Font.PLAIN, 12));
         voltar.addActionListener(this);		
         contentPane.add(voltar);
         
         // Botões de selecao das embarcacoes
-        portaAviao.setBounds(770, 180, 200, 50);
-        portaAviao.setIcon(new ImageIcon(DefinirJogo.class.getResource("/gui/imagens/portaaviao.png")));
-
-        portaAviao.addActionListener(this);
-        contentPane.add(portaAviao);
+        botoesEmbarcacoes[0] = new JButton();
+        botoesEmbarcacoes[0].setBounds(580, 180, 200, 50);
+        botoesEmbarcacoes[0].setIcon(new ImageIcon(DefinirJogo.class.getResource("/gui/imagens/portaaviao.png")));
+        botoesEmbarcacoes[0].addActionListener(this);
+        contentPane.add(botoesEmbarcacoes[0]);
         
-        submarino.setBounds(770, 240, 100, 50);
-        submarino.setIcon(new ImageIcon(DefinirJogo.class.getResource("/gui/imagens/submarino.png")));
-
-        submarino.addActionListener(this);
-        contentPane.add(submarino);
+        botoesEmbarcacoes[1] = new JButton();
+        botoesEmbarcacoes[1].setBounds(580, 240, 100, 50);
+        botoesEmbarcacoes[1].setIcon(new ImageIcon(DefinirJogo.class.getResource("/gui/imagens/submarino.png")));
+        botoesEmbarcacoes[1].addActionListener(this);
+        contentPane.add(botoesEmbarcacoes[1]);
         
-        navioEscolta.setBounds(770, 300, 150, 50);
-        navioEscolta.setIcon(new ImageIcon(DefinirJogo.class.getResource("/gui/imagens/navioescolta.png")));
-
-        navioEscolta.addActionListener(this);
-        contentPane.add(navioEscolta);
+        botoesEmbarcacoes[2] = new JButton();
+        botoesEmbarcacoes[2].setBounds(580, 300, 150, 50);
+        botoesEmbarcacoes[2].setIcon(new ImageIcon(DefinirJogo.class.getResource("/gui/imagens/navioescolta.png")));
+        botoesEmbarcacoes[2].addActionListener(this);
+        contentPane.add(botoesEmbarcacoes[2]);
         
-        aviaoCaca.setBounds(770, 360, 100, 50);
-        aviaoCaca.setIcon(new ImageIcon(DefinirJogo.class.getResource("/gui/imagens/aviaocaca.png")));
-        aviaoCaca.addActionListener(this);
-        contentPane.add(aviaoCaca);
+        botoesEmbarcacoes[3] = new JButton();
+        botoesEmbarcacoes[3].setBounds(580, 360, 100, 50);
+        botoesEmbarcacoes[3].setIcon(new ImageIcon(DefinirJogo.class.getResource("/gui/imagens/aviaocaca.png")));
+        botoesEmbarcacoes[3].addActionListener(this);
+        contentPane.add(botoesEmbarcacoes[3]);
         
-        // Insere os tabuleiro
-        tabuleiro.setBounds(30, 90, 500, 500);
-        contentPane.add(tabuleiro);
+        // Criando o tabuleiro
+        grid.setLayout(new GridLayout(10, 10, 0, 0));
+        
+        for (int linha = 0; linha < 10; linha++){
+            for (int coluna = 0; coluna < 10; coluna++){
+                botoes[linha][coluna] = new JButton("");
+                botoes[linha][coluna].addActionListener(this);
+                botoes[linha][coluna].setPreferredSize(new Dimension(40, 40));
+                botoes[linha][coluna].setFont(new Font("Arial", Font.PLAIN, 8));
+                botoes[linha][coluna].setFocusable(false);
+                grid.add(botoes[linha][coluna]);
+            }
+        }
+        
+        grid.setBounds(30, 80, 500, 500);
+        contentPane.add(grid);
         
         // Centralizando a tela
         setLocationRelativeTo(null);
      
     }
 
+    public int getEmbarcacaoSelecionada() {
+        return embarcacaoSelecionada;
+    }
+
+    public void setEmbarcacaoSelecionada(int embarcacaoSelecionada) {
+        this.embarcacaoSelecionada = embarcacaoSelecionada;
+    }
+    
     @Override
     public void actionPerformed(ActionEvent e) {
-       // Evento para voltar
+       // Evento para voltar para a tela anterior
         if (e.getSource() == voltar){
             SwingUtilities.invokeLater(() -> {
                 this.dispose();
@@ -109,6 +129,24 @@ public class DefinirJogo extends JFrame implements ActionListener {
                 TelaInicio inicio = new TelaInicio();
                 inicio.setVisible(true);
             });
+        }
+        
+        // Evento de seleção de embarcações
+        for (int i = 0; i < botoesEmbarcacoes.length; i++){
+            if (e.getSource() == botoesEmbarcacoes[i]) {
+                setEmbarcacaoSelecionada(i);
+                System.out.println(getEmbarcacaoSelecionada());
+            }
+        }
+        
+        // Eventos de cliques no tabuleiro
+        for (int linha = 0; linha < 10; linha++){
+            for (int coluna = 0; coluna < 10; coluna++) {
+                if (e.getSource() == botoes[linha][coluna]){
+                     System.out.println(linha + "x" + coluna);
+                     // inserir aqui controle se cabe ou nao
+                }
+            }
         }
     }
 }

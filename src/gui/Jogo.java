@@ -6,14 +6,17 @@ import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+import batalhanaval.Jogar;
+
 public class Jogo extends JFrame implements ActionListener {
-    
     // Instanciando o painel do jogo
     private JPanel contentPane = new JPanel();
     
     // Instanciando os tabuleiros
-    private Tabuleiro tabuleiroJogador = new Tabuleiro();
-    private Tabuleiro tabuleiroComputador = new Tabuleiro();
+    Jogar jogo = new Jogar();
+    
+    private Tabuleiro tabuleiroJogador;
+    private Tabuleiro tabuleiroComputador;
     
     // Labels
     private JLabel labelTitulo = new JLabel("Bem vindo ao Jogo");
@@ -114,6 +117,9 @@ public class Jogo extends JFrame implements ActionListener {
         contentPane.add(labelTimer);
         
         // Insere os tabuleiros
+        this.tabuleiroJogador = new Tabuleiro(jogo.getTabuleiroJogador());
+        this.tabuleiroComputador = new Tabuleiro(jogo.getTabuleiroComputador());
+        
         tabuleiroJogador.setBounds(0, 90, 500, 500);
         contentPane.add(tabuleiroJogador);
         

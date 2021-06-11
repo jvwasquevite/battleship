@@ -1,33 +1,47 @@
 package batalhanaval;
 
 public class PortaAviao implements Embarcacao {
-    private int tamanhoEmbarcacao = 4;
-    private final String nomeEmbarcacao = "Porta Avião";
-    private boolean statusEmbarcacao = true;
+    private final String nomeEmbarcacao;
+    private int tamanhoEmbarcacao;
+    private boolean statusEmbarcacao;
+
+    public PortaAviao() {
+        this.nomeEmbarcacao = "Porta Avião";
+        this.tamanhoEmbarcacao = 4;
+        this.statusEmbarcacao = true;
+    }
+    
+    @Override
+    public String getNomeEmbarcacao() {
+        return nomeEmbarcacao;
+    }
 
     @Override
     public int getTamanhoEmbarcacao() {
         return tamanhoEmbarcacao;
     }
-
+    
     @Override
-    public String getNomeEmbarcacao() {
-        return nomeEmbarcacao;
+    public void setTamanhoEmbarcacao(int tamanho) {
+        this.tamanhoEmbarcacao = tamanho;
     }
     
     @Override
     public boolean getStatusEmbarcacao() {
         return statusEmbarcacao;
     }
+    
+    @Override
+    public void setStatusEmbarcacao(boolean status) {
+        this.statusEmbarcacao = status;
+    }
 
     @Override
     public void explodirEmbarcacao() {
-        if(tamanhoEmbarcacao > 0){
-            // Explode uma unidade da embarcao
-            tamanhoEmbarcacao--;
-        } else if(tamanhoEmbarcacao == 0) {
-            // Embarcacao totalmente explodida
-            statusEmbarcacao = false;
+        if(getTamanhoEmbarcacao() > 0){
+            setTamanhoEmbarcacao(getTamanhoEmbarcacao() - 1);
+        } else if(getTamanhoEmbarcacao() == 0) {
+            setStatusEmbarcacao(false);
         }
     }
 }

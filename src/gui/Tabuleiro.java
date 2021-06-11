@@ -5,28 +5,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-import batalhanaval.Jogar;
-
 public class Tabuleiro extends JPanel implements ActionListener {
-    JPanel grid = new JPanel();
-
-    // Instanciando o painel do tabuleiro
-    private JPanel contentPane = new JPanel();
-
-    // Matriz de botoes da GUI
-    JButton[][] Botoes = new JButton[10][10];
+    private final JButton[][] Botoes = new JButton[10][10];
+    private final int matriz[][];
     
-    // Matriz que referencia os botoes da GUI
-    int matriz[][] = new int[10][10];
-    
-    // Classe Jogar
-    Jogar jogo = new Jogar();
-    
-    public Tabuleiro(){
-        contentPane.setBackground(Color.BLACK);
-        grid.setLayout(new GridLayout(10, 10, 2, 2));
+    public Tabuleiro(int matriz[][]){
+        this.matriz = matriz;
         
-        // Adiciona os Bot�es no Grid
+        JPanel contentPane = new JPanel();
+        JPanel grid = new JPanel();
+        
+        contentPane.setBackground(Color.BLACK);
+        grid.setLayout(new GridLayout(10, 10, 0, 0));
+        
+        // Adiciona os Botoes no Grid
         for (int linha = 0; linha < 10; linha++){
             for (int coluna = 0; coluna < 10; coluna++){
                 Botoes[linha][coluna] = new JButton("");
@@ -40,9 +32,6 @@ public class Tabuleiro extends JPanel implements ActionListener {
         
         contentPane.add(grid);
         add(contentPane);
-        
-        jogo.inicializarJogo(matriz);
-        
     }
     
     @Override
@@ -65,22 +54,23 @@ public class Tabuleiro extends JPanel implements ActionListener {
                         if(matriz[linha][coluna] == 1) {
                             //Botoes[linha][coluna].setIcon(new ImageIcon(Tabuleiro.class.getResource("/gui/imagens/portaaviao.png")));
                             Botoes[linha][coluna].setText(String.valueOf(matriz[linha][coluna]));
-                            jogo.getEmbarcacao("Porta Avião").explodirEmbarcacao();
+//                            jogo.getEmbarcacao("Porta Avião").explodirEmbarcacao();
+//                            System.out.println(jogo.getEmbarcacao("Porta Avião").getTamanhoEmbarcacao());
                         }
                         if(matriz[linha][coluna] == 2) {
                             //Botoes[linha][coluna].setIcon(new ImageIcon(Tabuleiro.class.getResource("/gui/imagens/submarino.png")));
                             Botoes[linha][coluna].setText(String.valueOf(matriz[linha][coluna]));
-                            jogo.getEmbarcacao("Submarino").explodirEmbarcacao();
+//                            jogo.getEmbarcacao("Submarino").explodirEmbarcacao();
                         }
                         if(matriz[linha][coluna] == 3) {
                             //Botoes[linha][coluna].setIcon(new ImageIcon(Tabuleiro.class.getResource("/gui/imagens/navioescolta.png")));
                             Botoes[linha][coluna].setText(String.valueOf(matriz[linha][coluna]));
-                            jogo.getEmbarcacao("Navio Escolta").explodirEmbarcacao();
+//                            jogo.getEmbarcacao("Navio Escolta").explodirEmbarcacao();
                         }
                         if(matriz[linha][coluna] == 4) {
                             //Botoes[linha][coluna].setIcon(new ImageIcon(Tabuleiro.class.getResource("/gui/imagens/aviaocava.png")));
                             Botoes[linha][coluna].setText(String.valueOf(matriz[linha][coluna]));
-                            jogo.getEmbarcacao("Avião Caça").explodirEmbarcacao();
+//                            jogo.getEmbarcacao("Avião Caça").explodirEmbarcacao();
                         }
                         
                         Botoes[linha][coluna].setEnabled(false);
