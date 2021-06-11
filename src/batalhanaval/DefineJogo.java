@@ -1,5 +1,10 @@
 package batalhanaval;
 
+// Cria uma matriz de inteiros
+// Recebe as posicoes + tipoEmbarcacao
+// Posiciona a embarcacao na matriz
+// Retorna a matriz final de inteiros
+
 public class DefineJogo {
     private final int[][] matriz;
     private boolean cabe;
@@ -14,22 +19,23 @@ public class DefineJogo {
             }
         }
     }
-
+    
+    // Determina o tamanho da embarcacao
     public int getTamanho(int tipoEmbarcacao) {
         switch (tipoEmbarcacao) {
-                case 1:
+                case 1: // Porta aviao
                     return 4;
-                case 2:
+                case 2: // Submarino
                     return 2;
-                case 3:
+                case 3: // Navio escolta
                     return 3;
-                case 4:
+                case 4: // Aviao caca
                     return 2;
             }
         return 0;
     }
     
-    // tipoEmbarcacao: 1,2,3,4
+    // Posiciona a embarcacao na matriz
     public boolean posicionar(int linha, int coluna, int tipoEmbarcacao) {
             cabe = cabeEmbarcacao(linha, coluna, getTamanho(tipoEmbarcacao), matriz);
 
@@ -53,13 +59,14 @@ public class DefineJogo {
                         matriz[linha][coluna] = 4;
                         break;
                 }
+                
                 coluna++;
             }
             
         return true;
     }
     
-    public int[][] getMatriz() {
+    public int[][] retornaMatriz() {
         return matriz;
     }
     

@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 
 import batalhanaval.Jogar;
 import java.awt.Color;
+import java.util.ArrayList;
 import javax.swing.border.LineBorder;
 
 public class Jogo extends JFrame implements ActionListener {
@@ -27,6 +28,7 @@ public class Jogo extends JFrame implements ActionListener {
     private JButton sair = new JButton("Sair do Jogo");
     
     // Botoes das embarcacoes
+    ArrayList<JButton> botoesTiro = new ArrayList();
     private JButton tiroPortaAviao = new JButton("Tiro porta-avião");
     private JButton tiroUnico = new JButton("Tiro unico");
     private JButton tiroDuplo = new JButton("Tiro duplo");
@@ -102,6 +104,11 @@ public class Jogo extends JFrame implements ActionListener {
         tiroEstrela.addActionListener(this);		
         contentPane.add(tiroEstrela);
         
+        botoesTiro.add(tiroPortaAviao);
+        botoesTiro.add(tiroUnico);
+        botoesTiro.add(tiroDuplo);
+        botoesTiro.add(tiroEstrela);
+        
         // Descricao dos botoes
         labelPortaAviao.setFont(new Font("Arial", Font.ITALIC, 11));
         labelPortaAviao.setForeground(Color.decode("#d20000"));
@@ -129,9 +136,9 @@ public class Jogo extends JFrame implements ActionListener {
         contentPane.add(labelTimer);
         
         // Insere os tabuleiros
-        Jogar jogoAleatorio = new Jogar();
-        this.tabuleiroJogador = new Tabuleiro(jogoAleatorio.getTabuleiroJogador(), true);
-        this.tabuleiroComputador = new Tabuleiro(jogoAleatorio.getTabuleiroComputador(), false);
+        Jogar jogo = new Jogar();
+        this.tabuleiroJogador = new Tabuleiro(jogo.getEmbJogador(), jogo.getEmbComputador(), tabuleiroComputador, jogo.getMatrizJogador(), botoesTiro, true);
+        this.tabuleiroComputador = new Tabuleiro(jogo.getEmbComputador(), jogo.getEmbJogador(), tabuleiroJogador, jogo.getMatrizComputador(), botoesTiro, false);
         
         tabuleiroJogador.setBounds(0, 90, 500, 500);
         contentPane.add(tabuleiroJogador);
@@ -207,6 +214,11 @@ public class Jogo extends JFrame implements ActionListener {
         tiroEstrela.addActionListener(this);		
         contentPane.add(tiroEstrela);
         
+        botoesTiro.add(tiroPortaAviao);
+        botoesTiro.add(tiroUnico);
+        botoesTiro.add(tiroDuplo);
+        botoesTiro.add(tiroEstrela);
+        
         // Descricao dos botoes
         labelPortaAviao.setFont(new Font("Arial", Font.ITALIC, 11));
         labelPortaAviao.setForeground(Color.decode("#d20000"));
@@ -234,9 +246,9 @@ public class Jogo extends JFrame implements ActionListener {
         contentPane.add(labelTimer);
         
         // Insere os tabuleiros
-        Jogar jogoDefinido = new Jogar();
-        this.tabuleiroJogador = new Tabuleiro(matrizJogador, true);
-        this.tabuleiroComputador = new Tabuleiro(jogoDefinido.getTabuleiroComputador(), false);
+        Jogar jogo = new Jogar();
+        this.tabuleiroJogador = new Tabuleiro(jogo.getEmbJogador(), jogo.getEmbComputador(), tabuleiroComputador, matrizJogador, botoesTiro, true);
+        this.tabuleiroComputador = new Tabuleiro(jogo.getEmbComputador(), jogo.getEmbJogador(), tabuleiroJogador, jogo.getMatrizComputador(), botoesTiro, false);
         
         tabuleiroJogador.setBounds(0, 90, 500, 500);
         contentPane.add(tabuleiroJogador);

@@ -40,6 +40,7 @@ public class PortaAviao implements Embarcacao {
     public void explodirEmbarcacao() {
         if(getTamanhoEmbarcacao() > 0){
             setTamanhoEmbarcacao(getTamanhoEmbarcacao() - 1);
+            System.out.println("explodiu");
         } else if(getTamanhoEmbarcacao() == 0) {
             setStatusEmbarcacao(false);
         }

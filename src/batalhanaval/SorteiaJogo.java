@@ -2,6 +2,11 @@ package batalhanaval;
 import java.util.ArrayList;
 import java.util.Random;
 
+// Cria uma matriz de inteiros
+// Recebe um array de Embarcacoes
+// Distribui as 4 Embarcacoes aleatoriamente
+// Retorna a matriz final de inteiros
+
 public class SorteiaJogo {
     private final Random sorteio = new Random();
     private final int[][] matriz;
@@ -69,7 +74,6 @@ public class SorteiaJogo {
             }
             System.out.print("\n");
         }
-        
         System.out.print("\n");
         
         return matriz;

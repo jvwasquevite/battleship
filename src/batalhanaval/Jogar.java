@@ -1,59 +1,70 @@
 package batalhanaval;
 import java.util.ArrayList;
 
-// Cria um array de embarcacoes para o jogador e computador
-// Retorna e modifica as embarcacoes do jogador e computador
-// Sorteia e retorna a matriz do Jogador e do computador
+// Inicializa os arrays de embarcacoes
+// Retorna os arrays de embarcacoes
 
 public class Jogar {
-    // Inicializa ArrayList de embarcacoes do jogador e do computador
-    private ArrayList<Embarcacao> embarcacoesJogador = new ArrayList();
-    private ArrayList<Embarcacao> embarcacoesComputador = new ArrayList();
+    private ArrayList<Embarcacao> embJogador;
+    private ArrayList<Embarcacao> embComputador;
     
-    private final SorteiaJogo sorteioJogador = new SorteiaJogo();
-    private final SorteiaJogo sorteioComputador = new SorteiaJogo();
+    SorteiaJogo sorteioJogador = new SorteiaJogo();
+    SorteiaJogo sorteioComputador = new SorteiaJogo();
+    
+    private int[][] matrizJogador;
+    private int[][] matrizComputador;
     
     public Jogar() {
-        // Preenche o ArrayList do Jogador
-        embarcacoesJogador.add(new PortaAviao());
-        embarcacoesJogador.add(new Submarino());
-        embarcacoesJogador.add(new NavioEscolta());
-        embarcacoesJogador.add(new AviaoCaca());
+        this.embJogador = new ArrayList();
+        this.embComputador = new ArrayList();
+       
+        embJogador.add(new PortaAviao());
+        embJogador.add(new Submarino());
+        embJogador.add(new NavioEscolta());
+        embJogador.add(new AviaoCaca());
+
+        embComputador.add(new PortaAviao());
+        embComputador.add(new Submarino());
+        embComputador.add(new NavioEscolta());
+        embComputador.add(new AviaoCaca());
         
-        System.out.println("Embarcacoes jogador = " + embarcacoesJogador);
+        System.out.println("Embarcacoes embJogador = " + embJogador);
+        System.out.println("Embarcacoes embComputador = " + embComputador);
         
-        // Preenche o ArrayList do Computador
-        embarcacoesComputador.add(new PortaAviao());
-        embarcacoesComputador.add(new Submarino());
-        embarcacoesComputador.add(new NavioEscolta());
-        embarcacoesComputador.add(new AviaoCaca());
-        
-        System.out.println("Embarcacoes computador = " + embarcacoesComputador);
+        this.matrizJogador = sorteioJogador.sortear(embJogador);
+        this.matrizComputador = sorteioComputador.sortear(embComputador);
     }
     
     // Getters e setters
-    public ArrayList<Embarcacao> getEmbarcacoesJogador() {
-        return embarcacoesJogador;
+    public ArrayList<Embarcacao> getEmbJogador() {
+        return embJogador;
     }
 
-    public void setEmbarcacoesJogador(ArrayList<Embarcacao> embarcacoesJogador) {
-        this.embarcacoesJogador = embarcacoesJogador;
+    public void setEmbJogador(ArrayList<Embarcacao> embJogador) {
+        this.embJogador = embJogador;
     }
 
-    public ArrayList<Embarcacao> getEmbarcacoesComputador() {
-        return embarcacoesComputador;
+    public ArrayList<Embarcacao> getEmbComputador() {
+        return embComputador;
     }
 
-    public void setEmbarcacoesComputador(ArrayList<Embarcacao> embarcacoesComputador) {
-        this.embarcacoesComputador = embarcacoesComputador;
+    public void setEmbComputador(ArrayList<Embarcacao> embComputador) {
+        this.embComputador = embComputador;
     }
     
-    // Retorna os tabuleiros do Jogador e do computador
-    public int[][] getTabuleiroJogador() {
-        return sorteioJogador.sortear(embarcacoesJogador);
+     public int[][] getMatrizJogador() {
+        return matrizJogador;
     }
-    
-    public int[][] getTabuleiroComputador() {
-        return sorteioComputador.sortear(embarcacoesComputador);
+
+    public void setMatrizJogador(int[][] matrizJogador) {
+        this.matrizJogador = matrizJogador;
+    }
+
+    public int[][] getMatrizComputador() {
+        return matrizComputador;
+    }
+
+    public void setMatrizComputador(int[][] matrizComputador) {
+        this.matrizComputador = matrizComputador;
     }
 }
