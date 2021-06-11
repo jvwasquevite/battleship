@@ -7,13 +7,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 import batalhanaval.Jogar;
+import java.awt.Color;
+import javax.swing.border.LineBorder;
 
 public class Jogo extends JFrame implements ActionListener {
     // Instanciando o painel do jogo
     private JPanel contentPane = new JPanel();
-    
-    // Instanciando os tabuleiros
-    Jogar jogo = new Jogar();
     
     private Tabuleiro tabuleiroJogador;
     private Tabuleiro tabuleiroComputador;
@@ -39,8 +38,9 @@ public class Jogo extends JFrame implements ActionListener {
     private JLabel labelDuplo = new JLabel("Navio escolta");
     private JLabel labelEstrela = new JLabel("Avião de caça");
     
+    // Construtor de Jogo Aleatorio
     public Jogo() {
-        setTitle("Batalha Naval em Java ➜ Jogo");
+        setTitle("Batalha Naval em Java ➜ Jogo Aleatorio");
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
@@ -76,38 +76,50 @@ public class Jogo extends JFrame implements ActionListener {
         // Botoes de tiros
         tiroPortaAviao.setBounds(340, 20, 150, 36);
         tiroPortaAviao.setFont(new Font("Arial", Font.PLAIN, 12));
+        tiroPortaAviao.setBorder(new LineBorder(Color.decode("#d20000"), 2));
+        tiroPortaAviao.setForeground(Color.decode("#d20000"));
         tiroPortaAviao.addActionListener(this);		
         contentPane.add(tiroPortaAviao);
         
         tiroUnico.setBounds(500, 20, 150, 36);
         tiroUnico.setFont(new Font("Arial", Font.PLAIN, 12));
+        tiroUnico.setBorder(new LineBorder(Color.decode("#1c52bb"), 2));
+        tiroUnico.setForeground(Color.decode("#1c52bb"));
         tiroUnico.addActionListener(this);		
         contentPane.add(tiroUnico);
         
         tiroDuplo.setBounds(660, 20, 150, 36);
         tiroDuplo.setFont(new Font("Arial", Font.PLAIN, 12));
+        tiroDuplo.setBorder(new LineBorder(Color.decode("#019131"), 2));
+        tiroDuplo.setForeground(Color.decode("#019131"));
         tiroDuplo.addActionListener(this);		
         contentPane.add(tiroDuplo);
         
         tiroEstrela.setBounds(820, 20, 150, 36);
         tiroEstrela.setFont(new Font("Arial", Font.PLAIN, 12));
+        tiroEstrela.setBorder(new LineBorder(Color.decode("#962879"), 2));
+        tiroEstrela.setForeground(Color.decode("#962879"));
         tiroEstrela.addActionListener(this);		
         contentPane.add(tiroEstrela);
         
         // Descricao dos botoes
         labelPortaAviao.setFont(new Font("Arial", Font.ITALIC, 11));
+        labelPortaAviao.setForeground(Color.decode("#d20000"));
         labelPortaAviao.setBounds(340, 60, 280, 15);
         contentPane.add(labelPortaAviao);
         
         labelUnico.setFont(new Font("Arial", Font.ITALIC, 11));
+        labelUnico.setForeground(Color.decode("#1c52bb"));
         labelUnico.setBounds(500, 60, 280, 15);
         contentPane.add(labelUnico);
         
         labelDuplo.setFont(new Font("Arial", Font.ITALIC, 11));
+        labelDuplo.setForeground(Color.decode("#019131"));
         labelDuplo.setBounds(660, 60, 280, 15);
         contentPane.add(labelDuplo);
         
         labelEstrela.setFont(new Font("Arial", Font.ITALIC, 11));
+        labelEstrela.setForeground(Color.decode("#962879"));
         labelEstrela.setBounds(820, 60, 280, 15);
         contentPane.add(labelEstrela);
         
@@ -117,8 +129,114 @@ public class Jogo extends JFrame implements ActionListener {
         contentPane.add(labelTimer);
         
         // Insere os tabuleiros
-        this.tabuleiroJogador = new Tabuleiro(jogo.getTabuleiroJogador());
-        this.tabuleiroComputador = new Tabuleiro(jogo.getTabuleiroComputador());
+        Jogar jogoAleatorio = new Jogar();
+        this.tabuleiroJogador = new Tabuleiro(jogoAleatorio.getTabuleiroJogador(), true);
+        this.tabuleiroComputador = new Tabuleiro(jogoAleatorio.getTabuleiroComputador(), false);
+        
+        tabuleiroJogador.setBounds(0, 90, 500, 500);
+        contentPane.add(tabuleiroJogador);
+        
+        tabuleiroComputador.setBounds(500, 90, 500, 500);
+        contentPane.add(tabuleiroComputador);
+        
+        // Centralizando a tela
+        setLocationRelativeTo(null);
+    }
+    
+    // Construtor de Jogo definido
+    public Jogo(int[][] matrizJogador) {
+        setTitle("Batalha Naval em Java ➜ Jogo Definido");
+        setResizable(false);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        // Estilização do painel
+        setBounds(100, 100, 1000, 630);
+        contentPane.setBorder(null);
+        contentPane.setLayout(null);
+        
+        // Insere o painel no frame
+        setContentPane(contentPane);
+        
+        // Titulo
+        labelTitulo.setFont(new Font("Arial", Font.BOLD, 18));
+        labelTitulo.setBounds(30, 25, 290, 29);
+        contentPane.add(labelTitulo);
+        
+        // Subtitulo
+        labelSubtitulo.setFont(new Font("Arial", Font.ITALIC, 12));
+        labelSubtitulo.setBounds(30, 55, 280, 15);
+        contentPane.add(labelSubtitulo);
+        
+        // Botoes
+        dica.setBounds(30, 540, 150, 30);
+        dica.setFont(new Font("Arial", Font.PLAIN, 12));
+        dica.addActionListener(this);		
+        contentPane.add(dica);
+        
+        sair.setBounds(820, 540, 150, 30);
+        sair.setFont(new Font("Arial", Font.PLAIN, 12));
+        sair.addActionListener(this);		
+        contentPane.add(sair);
+        
+        // Botoes de tiros
+        tiroPortaAviao.setBounds(340, 20, 150, 36);
+        tiroPortaAviao.setFont(new Font("Arial", Font.PLAIN, 12));
+        tiroPortaAviao.setBorder(new LineBorder(Color.decode("#d20000"), 2));
+        tiroPortaAviao.setForeground(Color.decode("#d20000"));
+        tiroPortaAviao.addActionListener(this);		
+        contentPane.add(tiroPortaAviao);
+        
+        tiroUnico.setBounds(500, 20, 150, 36);
+        tiroUnico.setFont(new Font("Arial", Font.PLAIN, 12));
+        tiroUnico.setBorder(new LineBorder(Color.decode("#1c52bb"), 2));
+        tiroUnico.setForeground(Color.decode("#1c52bb"));
+        tiroUnico.addActionListener(this);		
+        contentPane.add(tiroUnico);
+        
+        tiroDuplo.setBounds(660, 20, 150, 36);
+        tiroDuplo.setFont(new Font("Arial", Font.PLAIN, 12));
+        tiroDuplo.setBorder(new LineBorder(Color.decode("#019131"), 2));
+        tiroDuplo.setForeground(Color.decode("#019131"));
+        tiroDuplo.addActionListener(this);		
+        contentPane.add(tiroDuplo);
+        
+        tiroEstrela.setBounds(820, 20, 150, 36);
+        tiroEstrela.setFont(new Font("Arial", Font.PLAIN, 12));
+        tiroEstrela.setBorder(new LineBorder(Color.decode("#962879"), 2));
+        tiroEstrela.setForeground(Color.decode("#962879"));
+        tiroEstrela.addActionListener(this);		
+        contentPane.add(tiroEstrela);
+        
+        // Descricao dos botoes
+        labelPortaAviao.setFont(new Font("Arial", Font.ITALIC, 11));
+        labelPortaAviao.setForeground(Color.decode("#d20000"));
+        labelPortaAviao.setBounds(340, 60, 280, 15);
+        contentPane.add(labelPortaAviao);
+        
+        labelUnico.setFont(new Font("Arial", Font.ITALIC, 11));
+        labelUnico.setForeground(Color.decode("#1c52bb"));
+        labelUnico.setBounds(500, 60, 280, 15);
+        contentPane.add(labelUnico);
+        
+        labelDuplo.setFont(new Font("Arial", Font.ITALIC, 11));
+        labelDuplo.setForeground(Color.decode("#019131"));
+        labelDuplo.setBounds(660, 60, 280, 15);
+        contentPane.add(labelDuplo);
+        
+        labelEstrela.setFont(new Font("Arial", Font.ITALIC, 11));
+        labelEstrela.setForeground(Color.decode("#962879"));
+        labelEstrela.setBounds(820, 60, 280, 15);
+        contentPane.add(labelEstrela);
+        
+        // Timer
+        labelTimer.setFont(new Font("Arial", Font.BOLD, 18));
+        labelTimer.setBounds(475, 550, 280, 15);
+        contentPane.add(labelTimer);
+        
+        // Insere os tabuleiros
+        Jogar jogoDefinido = new Jogar();
+        this.tabuleiroJogador = new Tabuleiro(matrizJogador, true);
+        this.tabuleiroComputador = new Tabuleiro(jogoDefinido.getTabuleiroComputador(), false);
         
         tabuleiroJogador.setBounds(0, 90, 500, 500);
         contentPane.add(tabuleiroJogador);

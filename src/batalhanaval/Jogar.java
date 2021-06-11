@@ -1,14 +1,17 @@
 package batalhanaval;
-
 import java.util.ArrayList;
+
+// Cria um array de embarcacoes para o jogador e computador
+// Retorna e modifica as embarcacoes do jogador e computador
+// Sorteia e retorna a matriz do Jogador e do computador
 
 public class Jogar {
     // Inicializa ArrayList de embarcacoes do jogador e do computador
     private ArrayList<Embarcacao> embarcacoesJogador = new ArrayList();
     private ArrayList<Embarcacao> embarcacoesComputador = new ArrayList();
     
-    SorteiaJogo sorteioJogador = new SorteiaJogo();
-    SorteiaJogo sorteioComputador = new SorteiaJogo();
+    private final SorteiaJogo sorteioJogador = new SorteiaJogo();
+    private final SorteiaJogo sorteioComputador = new SorteiaJogo();
     
     public Jogar() {
         // Preenche o ArrayList do Jogador
@@ -17,7 +20,7 @@ public class Jogar {
         embarcacoesJogador.add(new NavioEscolta());
         embarcacoesJogador.add(new AviaoCaca());
         
-        System.out.println(embarcacoesJogador);
+        System.out.println("Embarcacoes jogador = " + embarcacoesJogador);
         
         // Preenche o ArrayList do Computador
         embarcacoesComputador.add(new PortaAviao());
@@ -25,7 +28,7 @@ public class Jogar {
         embarcacoesComputador.add(new NavioEscolta());
         embarcacoesComputador.add(new AviaoCaca());
         
-        System.out.println(embarcacoesComputador);
+        System.out.println("Embarcacoes computador = " + embarcacoesComputador);
     }
     
     // Getters e setters
@@ -45,6 +48,7 @@ public class Jogar {
         this.embarcacoesComputador = embarcacoesComputador;
     }
     
+    // Retorna os tabuleiros do Jogador e do computador
     public int[][] getTabuleiroJogador() {
         return sorteioJogador.sortear(embarcacoesJogador);
     }

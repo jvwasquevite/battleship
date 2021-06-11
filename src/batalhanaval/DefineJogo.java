@@ -1,5 +1,4 @@
 package batalhanaval;
-import java.util.ArrayList;
 
 public class DefineJogo {
     private final int[][] matriz;
@@ -7,48 +6,65 @@ public class DefineJogo {
     
     public DefineJogo() {
         this.matriz = new int[10][10];
-    }
-    
-    public int[][] definir(int linha, int coluna, int tipoEmbarcacao, ArrayList<Embarcacao> embarcacoes) {
+        
         // Inicializa o tabuleiro com zeros
         for (int i = 0; i < 10; i++){
             for (int j = 0; j < 10; j++){ 
                     this.matriz[i][j] = 0;
             }
         }
-        
-        // Percorre o ArrayList de embarcacoes
-        for(int cont = 0; cont < embarcacoes.size(); cont++){
-            cabe = cabeEmbarcacao(linha, coluna, embarcacoes.get(cont).getTamanhoEmbarcacao(), matriz);
+    }
+
+    public int getTamanho(int tipoEmbarcacao) {
+        switch (tipoEmbarcacao) {
+                case 1:
+                    return 4;
+                case 2:
+                    return 2;
+                case 3:
+                    return 3;
+                case 4:
+                    return 2;
+            }
+        return 0;
+    }
+    
+    // tipoEmbarcacao: 1,2,3,4
+    public boolean posicionar(int linha, int coluna, int tipoEmbarcacao) {
+            cabe = cabeEmbarcacao(linha, coluna, getTamanho(tipoEmbarcacao), matriz);
 
             if(cabe == false){
-                // se for falso
+                return false;
             }
             
             // Percorre o tamanho da embarcacao e preenche no tabuleiro
-            for (int i = 0; i < embarcacoes.get(cont).getTamanhoEmbarcacao(); i++){
-                if("Porta Avião".equals(embarcacoes.get(cont).getNomeEmbarcacao())) {
-                    matriz[linha][coluna] = 1;
+            for (int i = 0; i < getTamanho(tipoEmbarcacao); i++){
+                switch(tipoEmbarcacao) {
+                    case 1:
+                        matriz[linha][coluna] = 1;
+                        break;
+                    case 2:
+                        matriz[linha][coluna] = 2;
+                        break;
+                    case 3:
+                        matriz[linha][coluna] = 3;
+                        break;
+                    case 4:
+                        matriz[linha][coluna] = 4;
+                        break;
                 }
-                if("Submarino".equals(embarcacoes.get(cont).getNomeEmbarcacao())) {
-                    matriz[linha][coluna] = 2;
-                }
-                if("Navio Escolta".equals(embarcacoes.get(cont).getNomeEmbarcacao())) {
-                    matriz[linha][coluna] = 3;
-                }
-                if("Avião Caça".equals(embarcacoes.get(cont).getNomeEmbarcacao())) {
-                    matriz[linha][coluna] = 4;
-                }
-
                 coluna++;
             }
-        }
-        
+            
+        return true;
+    }
+    
+    public int[][] getMatriz() {
         return matriz;
     }
     
     private boolean cabeEmbarcacao(int linha, int coluna, int tamanho, int matriz[][]){
-        if (coluna > (9 - tamanho)){
+        if (coluna > (10 - tamanho)){
             return false;
         }
         

@@ -14,16 +14,16 @@ public class SorteiaJogo {
         this.matriz = new int[10][10];
         this.linha = sorteio.nextInt(10);
         this.coluna = sorteio.nextInt(10);
-    }
-    
-    public int[][] sortear(ArrayList<Embarcacao> embarcacoes) {
+        
         // Inicializa o tabuleiro com zeros
         for (int i = 0; i < 10; i++){
             for (int j = 0; j < 10; j++){
                 matriz[i][j] = 0;
             }
         }
-        
+    }
+    
+    public int[][] sortear(ArrayList<Embarcacao> embarcacoes) {
         // Percorre o ArrayList de embarcacoes
         for(int cont = 0; cont < embarcacoes.size(); cont++){
             cabe = cabeEmbarcacao(linha, coluna, embarcacoes.get(cont).getTamanhoEmbarcacao(), matriz);
@@ -40,17 +40,19 @@ public class SorteiaJogo {
             
             // Percorre o tamanho da embarcacao e preenche no tabuleiro
             for (int i = 0; i < embarcacoes.get(cont).getTamanhoEmbarcacao(); i++){
-                if("Porta Avião".equals(embarcacoes.get(cont).getNomeEmbarcacao())) {
-                    matriz[linha][coluna] = 1;
-                }
-                if("Submarino".equals(embarcacoes.get(cont).getNomeEmbarcacao())) {
-                    matriz[linha][coluna] = 2;
-                }
-                if("Navio Escolta".equals(embarcacoes.get(cont).getNomeEmbarcacao())) {
-                    matriz[linha][coluna] = 3;
-                }
-                if("Avião Caça".equals(embarcacoes.get(cont).getNomeEmbarcacao())) {
-                    matriz[linha][coluna] = 4;
+                switch(embarcacoes.get(cont).getNomeEmbarcacao()) {
+                    case "Porta Avião":
+                        matriz[linha][coluna] = 1;
+                        break;
+                    case "Submarino":
+                        matriz[linha][coluna] = 2;
+                        break;
+                    case "Navio Escolta":
+                        matriz[linha][coluna] = 3;
+                        break;
+                    case "Avião Caça":
+                        matriz[linha][coluna] = 4;
+                        break;
                 }
 
                 coluna++;
@@ -74,7 +76,7 @@ public class SorteiaJogo {
     }
     
     private boolean cabeEmbarcacao(int linha, int coluna, int tamanho, int matriz[][]){
-        if (coluna > (9 - tamanho)){
+        if (coluna > (10 - tamanho)){
             return false;
         }
         
