@@ -38,10 +38,11 @@ public class Submarino implements Embarcacao {
 
     @Override
     public void explodirEmbarcacao() {
-        if(getTamanhoEmbarcacao() > 0){
-            setTamanhoEmbarcacao(getTamanhoEmbarcacao() - 1);
-        } else if(getTamanhoEmbarcacao() == 0) {
-            setStatusEmbarcacao(false);
-        }
+        setTamanhoEmbarcacao(getTamanhoEmbarcacao() - 1);
+    }
+    
+    @Override
+    public void ler() {
+        System.out.println("{" + "nomeEmbarcacao=" + nomeEmbarcacao + ", tamanhoEmbarcacao=" + tamanhoEmbarcacao + ", statusEmbarcacao=" + statusEmbarcacao + "}");
     }
 }

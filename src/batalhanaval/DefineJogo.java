@@ -66,7 +66,7 @@ public class DefineJogo {
         return true;
     }
     
-    public int[][] retornaMatriz() {
+    public int[][] getMatriz() {
         return matriz;
     }
     

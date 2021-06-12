@@ -160,7 +160,7 @@ public class DefinirJogo extends JFrame implements ActionListener {
         // Eventos de cliques no tabuleiro
         for (int linha = 0; linha < 10; linha++){
             for (int coluna = 0; coluna < 10; coluna++) {
-                matriz = define.retornaMatriz();
+                matriz = define.getMatriz();
                  
                 if (e.getSource() == botoes[linha][coluna]){
                     boolean coube = define.posicionar(linha, coluna, getEmbarcacaoSelecionada());
@@ -224,8 +224,8 @@ public class DefinirJogo extends JFrame implements ActionListener {
         if (e.getSource() == iniciarJogo){
             SwingUtilities.invokeLater(() -> {
                 this.dispose();
-                Jogo jogo = new Jogo(matriz);
-                jogo.setVisible(true);
+                Jogo definido = new Jogo(matriz);
+                definido.setVisible(true);
             });
         }
     }

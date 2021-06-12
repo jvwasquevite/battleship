@@ -8,39 +8,40 @@ import java.awt.event.ActionEvent;
 
 import batalhanaval.Jogar;
 import java.awt.Color;
-import java.util.ArrayList;
 import javax.swing.border.LineBorder;
 
 public class Jogo extends JFrame implements ActionListener {
     // Instanciando o painel do jogo
-    private JPanel contentPane = new JPanel();
+    private final JPanel contentPane = new JPanel();
     
-    private Tabuleiro tabuleiroJogador;
-    private Tabuleiro tabuleiroComputador;
+    private final Tabuleiro tabuleiroJogador;
+    private final Tabuleiro tabuleiroComputador;
     
     // Labels
-    private JLabel labelTitulo = new JLabel("Bem vindo ao Jogo");
-    private JLabel labelSubtitulo = new JLabel("Destrua as 4 embarcações do oponente.");
-    private JLabel labelTimer = new JLabel("00:00");
+    private final JLabel labelTitulo = new JLabel("Bem vindo ao Jogo");
+    private final JLabel labelSubtitulo = new JLabel("Destrua as 4 embarcações do oponente.");
+    private final JLabel labelTimer = new JLabel("00:00");
     
     // Botoes
-    private JButton dica = new JButton("Solicitar Dica");
-    private JButton sair = new JButton("Sair do Jogo");
+    private final JButton dica = new JButton("Solicitar Dica");
+    private final JButton sair = new JButton("Sair do Jogo");
     
     // Botoes das embarcacoes
-    ArrayList<JButton> botoesTiro = new ArrayList();
-    private JButton tiroPortaAviao = new JButton("Tiro porta-avião");
-    private JButton tiroUnico = new JButton("Tiro unico");
-    private JButton tiroDuplo = new JButton("Tiro duplo");
-    private JButton tiroEstrela = new JButton("Tiro estrela");
+    private final JButton[] botoesTiro = new JButton[4];
+    private int tiroSelecionado;
+            
+    private final JButton tiroPortaAviao = new JButton("Tiro porta-avião");
+    private final JButton tiroUnico = new JButton("Tiro unico");
+    private final JButton tiroDuplo = new JButton("Tiro duplo");
+    private final JButton tiroEstrela = new JButton("Tiro estrela");
     
     // Labels dos botoes
-    private JLabel labelPortaAviao = new JLabel("1 tiro a cada 2 rodadas");
-    private JLabel labelUnico = new JLabel("Submarino");
-    private JLabel labelDuplo = new JLabel("Navio escolta");
-    private JLabel labelEstrela = new JLabel("Avião de caça");
+    private final JLabel labelPortaAviao = new JLabel("1 tiro a cada 2 rodadas");
+    private final JLabel labelUnico = new JLabel("Submarino");
+    private final JLabel labelDuplo = new JLabel("Navio escolta");
+    private final JLabel labelEstrela = new JLabel("Avião de caça");
     
-    // Construtor de Jogo Aleatorio
+    // Jogo Aleatorio
     public Jogo() {
         setTitle("Batalha Naval em Java ➜ Jogo Aleatorio");
         setResizable(false);
@@ -80,7 +81,7 @@ public class Jogo extends JFrame implements ActionListener {
         tiroPortaAviao.setFont(new Font("Arial", Font.PLAIN, 12));
         tiroPortaAviao.setBorder(new LineBorder(Color.decode("#d20000"), 2));
         tiroPortaAviao.setForeground(Color.decode("#d20000"));
-        tiroPortaAviao.addActionListener(this);		
+        tiroPortaAviao.addActionListener(this);
         contentPane.add(tiroPortaAviao);
         
         tiroUnico.setBounds(500, 20, 150, 36);
@@ -104,10 +105,11 @@ public class Jogo extends JFrame implements ActionListener {
         tiroEstrela.addActionListener(this);		
         contentPane.add(tiroEstrela);
         
-        botoesTiro.add(tiroPortaAviao);
-        botoesTiro.add(tiroUnico);
-        botoesTiro.add(tiroDuplo);
-        botoesTiro.add(tiroEstrela);
+        // Adiciona os botoes de tiro em um array
+        botoesTiro[0] = tiroPortaAviao;
+        botoesTiro[1] = tiroUnico;
+        botoesTiro[2] = tiroDuplo;
+        botoesTiro[3] = tiroEstrela;
         
         // Descricao dos botoes
         labelPortaAviao.setFont(new Font("Arial", Font.ITALIC, 11));
@@ -135,10 +137,16 @@ public class Jogo extends JFrame implements ActionListener {
         labelTimer.setBounds(475, 550, 280, 15);
         contentPane.add(labelTimer);
         
-        // Insere os tabuleiros
+        // Instancia e inicializa um novo jogo
         Jogar jogo = new Jogar();
-        this.tabuleiroJogador = new Tabuleiro(jogo.getEmbJogador(), jogo.getEmbComputador(), tabuleiroComputador, jogo.getMatrizJogador(), botoesTiro, true);
-        this.tabuleiroComputador = new Tabuleiro(jogo.getEmbComputador(), jogo.getEmbJogador(), tabuleiroJogador, jogo.getMatrizComputador(), botoesTiro, false);
+        
+        // Inicializa os tabuleiros
+        this.tabuleiroJogador = new Tabuleiro(jogo, botoesTiro, true);
+        this.tabuleiroComputador = new Tabuleiro(jogo, botoesTiro, false);
+        
+        // Referencia os tabuleiros dos oponentes
+        this.tabuleiroJogador.oponente(tabuleiroComputador);
+        this.tabuleiroComputador.oponente(tabuleiroJogador);
         
         tabuleiroJogador.setBounds(0, 90, 500, 500);
         contentPane.add(tabuleiroJogador);
@@ -150,7 +158,7 @@ public class Jogo extends JFrame implements ActionListener {
         setLocationRelativeTo(null);
     }
     
-    // Construtor de Jogo definido
+    // Jogo definido
     public Jogo(int[][] matrizJogador) {
         setTitle("Batalha Naval em Java ➜ Jogo Definido");
         setResizable(false);
@@ -214,10 +222,11 @@ public class Jogo extends JFrame implements ActionListener {
         tiroEstrela.addActionListener(this);		
         contentPane.add(tiroEstrela);
         
-        botoesTiro.add(tiroPortaAviao);
-        botoesTiro.add(tiroUnico);
-        botoesTiro.add(tiroDuplo);
-        botoesTiro.add(tiroEstrela);
+        // Adiciona os botoes de tiro em um array
+        botoesTiro[0] = tiroPortaAviao;
+        botoesTiro[1] = tiroUnico;
+        botoesTiro[2] = tiroDuplo;
+        botoesTiro[3] = tiroEstrela;
         
         // Descricao dos botoes
         labelPortaAviao.setFont(new Font("Arial", Font.ITALIC, 11));
@@ -245,10 +254,16 @@ public class Jogo extends JFrame implements ActionListener {
         labelTimer.setBounds(475, 550, 280, 15);
         contentPane.add(labelTimer);
         
-        // Insere os tabuleiros
-        Jogar jogo = new Jogar();
-        this.tabuleiroJogador = new Tabuleiro(jogo.getEmbJogador(), jogo.getEmbComputador(), tabuleiroComputador, matrizJogador, botoesTiro, true);
-        this.tabuleiroComputador = new Tabuleiro(jogo.getEmbComputador(), jogo.getEmbJogador(), tabuleiroJogador, jogo.getMatrizComputador(), botoesTiro, false);
+        // Instancia e inicializa um novo jogo definido
+        Jogar jogo = new Jogar(matrizJogador);
+        
+        // Inicializa os tabuleiros
+        this.tabuleiroJogador = new Tabuleiro(jogo, botoesTiro, true);
+        this.tabuleiroComputador = new Tabuleiro(jogo, botoesTiro, false);
+        
+        // Referencia os tabuleiros dos oponentes
+        this.tabuleiroJogador.oponente(tabuleiroComputador);
+        this.tabuleiroComputador.oponente(tabuleiroJogador);
         
         tabuleiroJogador.setBounds(0, 90, 500, 500);
         contentPane.add(tabuleiroJogador);
@@ -258,6 +273,15 @@ public class Jogo extends JFrame implements ActionListener {
         
         // Centralizando a tela
         setLocationRelativeTo(null);
+    }
+    
+    // Getter e setter dos botoes de tiro
+    public int getTiroSelecionado() {
+        return tiroSelecionado;
+    }
+
+    public void setTiroSelecionado(int tiroSelecionado) {
+        this.tiroSelecionado = tiroSelecionado;
     }
 
     @Override
@@ -283,6 +307,13 @@ public class Jogo extends JFrame implements ActionListener {
                             inicio.setVisible(true);
                         });
                         break;
+            }
+        }
+        
+        // Evento de selecao do tiro
+        for (int i = 0; i < botoesTiro.length; i++){
+            if (e.getSource() == botoesTiro[i]) {
+                setTiroSelecionado(i);
             }
         }
     }

@@ -5,9 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-import java.util.ArrayList;
-import batalhanaval.Embarcacao;
-import batalhanaval.JogadaComputador;
+import batalhanaval.Jogar;
 import java.util.Random;
 
 // Cria uma matriz de botoes para a interface
@@ -19,24 +17,24 @@ import java.util.Random;
 // Se acerta, muda a cor do botao para a cor da embarcacao atingida
 
 public class Tabuleiro extends JPanel implements ActionListener {
-    private final JButton[][] Botoes;
-    
-    private ArrayList<Embarcacao> embarcacoes;
-    private ArrayList<Embarcacao> embOponente;
-    private Tabuleiro tabOponente;
-    private final int matriz[][];
-    
     private final JPanel contentPane;
     private final JPanel grid = new JPanel();
-    private final ArrayList<JButton> botoesTiro;
+    private final JButton[][] Botoes;
     
-    public Tabuleiro(ArrayList<Embarcacao> embarcacoes, ArrayList<Embarcacao> embOponente, Tabuleiro oponente, int matriz[][], ArrayList<JButton> botoesTiro, boolean visible){
+    // Atributos com o jogo e a matriz gerada
+    private final Jogar jogo;
+    private final int[][] matriz;
+    
+    // Atributo com o Tabuleiro do oponente
+    private Tabuleiro tabOponente;
+    
+    // Botoes de tiros
+    private final JButton[] botoesTiro;
+    
+    public Tabuleiro(Jogar jogo, JButton[] botoesTiro, boolean visible){
+        this.jogo = jogo;
         this.contentPane = new JPanel();
         this.Botoes = new JButton[10][10];
-        this.matriz = matriz;
-        this.embarcacoes = embarcacoes;
-        this.embOponente = embOponente;
-        this.tabOponente = oponente;
         this.botoesTiro = botoesTiro;
         
         contentPane.setBackground(Color.decode("#999999"));
@@ -44,6 +42,8 @@ public class Tabuleiro extends JPanel implements ActionListener {
         
         if (visible == true) {
             // Tabuleiro do jogador
+            this.matriz = jogo.getMatrizJogador();
+            
             for (int linha = 0; linha < 10; linha++){
                 for (int coluna = 0; coluna < 10; coluna++){
                     Botoes[linha][coluna] = new JButton("");
@@ -72,6 +72,8 @@ public class Tabuleiro extends JPanel implements ActionListener {
             }
         } else {
             // Tabuleiro do computador
+            this.matriz = jogo.getMatrizComputador();
+            
             for (int linha = 0; linha < 10; linha++){
                 for (int coluna = 0; coluna < 10; coluna++){
                     Botoes[linha][coluna] = new JButton("");
@@ -88,95 +90,54 @@ public class Tabuleiro extends JPanel implements ActionListener {
         add(contentPane);
     }
     
-    public void jogadaComputador() {
-        Random sorteio = new Random();
-        int linha = sorteio.nextInt(10);
-        int coluna = sorteio.nextInt(10);
-        
-        tabOponente.Botoes[linha][coluna].setIcon(new ImageIcon(DefinirJogo.class.getResource("/gui/imagens/explosao.png")));
-        
-        if(tabOponente.matriz[linha][coluna] == 0) {
-            System.out.println("pc errou");
-        } else if (tabOponente.matriz[linha][coluna] != 0) {
-            switch (tabOponente.matriz[linha][coluna]) {
-                case 1:
-                    embarcacoes.get(0).explodirEmbarcacao();
-                    // Se tiver totalmente destruida
-                    if(!embarcacoes.get(0).getStatusEmbarcacao()) {
-                        tabOponente.botoesTiro.get(0).setEnabled(false);
-                    }
-                    break;
-                case 2:
-                    embarcacoes.get(1).explodirEmbarcacao();
-                    // Se tiver totalmente destruida
-                    if(!embarcacoes.get(1).getStatusEmbarcacao()) {
-                        tabOponente.botoesTiro.get(1).setEnabled(false);
-                    }
-                    break;
-                case 3:
-                    embarcacoes.get(2).explodirEmbarcacao();
-                    // Se tiver totalmente destruida
-                    if(!embarcacoes.get(2).getStatusEmbarcacao()) {
-                        tabOponente.botoesTiro.get(2).setEnabled(false);
-                    }
-                    break;
-                case 4:
-                    embarcacoes.get(3).explodirEmbarcacao();
-                    // Se tiver totalmente destruida
-                    if(!embarcacoes.get(3).getStatusEmbarcacao()) {
-                        tabOponente.botoesTiro.get(3).setEnabled(false);
-                    }
-                    break;
-                }
-        }
+    public void oponente(Tabuleiro oponente) {
+        this.tabOponente = oponente;
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
         for (int linha = 0; linha < 10; linha++){
             for (int coluna = 0; coluna < 10; coluna++) {
-                
-                // Quando um botao eh clicado
                 if (e.getSource() == Botoes[linha][coluna]) {
-                    System.out.print(linha + "x" + coluna + ":");
+                    System.out.println("\nNOVO ROUND:");
                     
-                    if (matriz[linha][coluna] == 0) {
-                        // Se não acertou
-                        System.out.println("errou!");
+                    // Implementa a jogada do Jogador
+                    if(jogo.vezJogador(linha, coluna)) {
                         Botoes[linha][coluna].setEnabled(false);
-                        jogadaComputador();
+                        Botoes[linha][coluna].setIcon(new ImageIcon(DefinirJogo.class.getResource("/gui/imagens/explosao.png")));
                         
-                    } else if (matriz[linha][coluna] != 0) {
+                    } else {
+                        // Se errou
+                        Botoes[linha][coluna].setEnabled(false);
+                    }
+                    
+                    // Implementa a jogada do Computador
+                    Random sorteio = new Random();
+                    int linhaSort = sorteio.nextInt(10);
+                    int colunaSort = sorteio.nextInt(10);
+                    
+                    if(jogo.vezComputador(linhaSort, colunaSort)) {
                         // Se acertou
-                        System.out.println("acertou!");
+                        tabOponente.Botoes[linhaSort][colunaSort].setIcon(new ImageIcon(DefinirJogo.class.getResource("/gui/imagens/explosao.png")));
                         
-                        switch (matriz[linha][coluna]) {
-                        case 1:
-                            Botoes[linha][coluna].setBackground(Color.decode("#d20000"));
-                            Botoes[linha][coluna].setEnabled(false);
-                            embOponente.get(0).explodirEmbarcacao();
-                            break;
-                        case 2:
-                            Botoes[linha][coluna].setBackground(Color.decode("#1c52bb"));
-                            Botoes[linha][coluna].setEnabled(false);
-                            embOponente.get(1).explodirEmbarcacao();
-                            System.out.println(embOponente.get(1).getTamanhoEmbarcacao());
-                            break;
-                        case 3:
-                            Botoes[linha][coluna].setBackground(Color.decode("#019131"));
-                            Botoes[linha][coluna].setEnabled(false);
-                            embOponente.get(2).explodirEmbarcacao();
-                            System.out.println(embOponente.get(2).getTamanhoEmbarcacao());
-                            break;
-                        case 4:
-                            Botoes[linha][coluna].setBackground(Color.decode("#962879"));
-                            Botoes[linha][coluna].setEnabled(false);
-                            embOponente.get(3).explodirEmbarcacao();
-                            System.out.println(embOponente.get(3).getTamanhoEmbarcacao());
-                            break;
+                        // Testa se tem alguma embarcacao totalmente atingida
+                        for(int i = 0; i < 4; i++) {
+                            if(jogo.getEmbJogador().get(i).getTamanhoEmbarcacao() == 0) {
+                                botoesTiro[i].setEnabled(false);
+                            }
                         }
-                        
-                        jogadaComputador();
+                    } else {
+                        // Se errou
+                        tabOponente.Botoes[linhaSort][colunaSort].setIcon(new ImageIcon(DefinirJogo.class.getResource("/gui/imagens/explosao.png")));
+                    }
+                    
+                    // Teste se alguem ganhou
+                    if(jogo.jogadorGanhou()) {
+                        JOptionPane.showMessageDialog(null, "Parabens! Você ganhou.");
+                    }
+                    
+                    if(jogo.computadorGanhou()) {
+                        JOptionPane.showMessageDialog(null, "Você perdeu.");
                     }
                 }
             }

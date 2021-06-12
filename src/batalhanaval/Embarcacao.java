@@ -7,4 +7,5 @@ public interface Embarcacao {
     public boolean getStatusEmbarcacao();
     public void setStatusEmbarcacao(boolean status);
     public void explodirEmbarcacao();
+    public void ler();
 }
