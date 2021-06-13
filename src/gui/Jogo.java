@@ -18,17 +18,19 @@ public class Jogo extends JFrame implements ActionListener {
     private final Tabuleiro tabuleiroComputador;
     
     // Labels
-    private final JLabel labelTitulo = new JLabel("Bem vindo ao Jogo");
+    private final JLabel labelTitulo;
     private final JLabel labelSubtitulo = new JLabel("Destrua as 4 embarcações do oponente.");
-    private final JLabel labelTimer = new JLabel("00:00");
     
     // Botoes
     private final JButton dica = new JButton("Solicitar Dica");
     private final JButton sair = new JButton("Sair do Jogo");
     
+    private int qntdDicas = 3;
+    private final JLabel dicaLabel = new JLabel(this.qntdDicas + " restantes");
+    
     // Botoes das embarcacoes
     private final JButton[] botoesTiro = new JButton[4];
-    private int tiroSelecionado;
+    private int tiroSelecionado = 0;
             
     private final JButton tiroPortaAviao = new JButton("Tiro porta-avião");
     private final JButton tiroUnico = new JButton("Tiro unico");
@@ -41,11 +43,22 @@ public class Jogo extends JFrame implements ActionListener {
     private final JLabel labelDuplo = new JLabel("Navio escolta");
     private final JLabel labelEstrela = new JLabel("Avião de caça");
     
+    // Contador
+    private final JLabel labelTimer = new JLabel("");
+    private Timer timer;
+    private int contador;
+    
+    private Jogar jogo;
+    private String nomeJogador;
+    
     // Jogo Aleatorio
-    public Jogo() {
+    public Jogo(String nomeJogador) {
         setTitle("Batalha Naval em Java ➜ Jogo Aleatorio");
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        // Salva o nome do Jogador
+        this.nomeJogador = nomeJogador;
         
         // Estilização do painel
         setBounds(100, 100, 1000, 630);
@@ -56,6 +69,7 @@ public class Jogo extends JFrame implements ActionListener {
         setContentPane(contentPane);
         
         // Titulo
+        labelTitulo = new JLabel("Bem vindo, " + nomeJogador);
         labelTitulo.setFont(new Font("Arial", Font.BOLD, 18));
         labelTitulo.setBounds(30, 25, 290, 29);
         contentPane.add(labelTitulo);
@@ -76,9 +90,13 @@ public class Jogo extends JFrame implements ActionListener {
         sair.addActionListener(this);		
         contentPane.add(sair);
         
+        dicaLabel.setBounds(190, 540, 150, 30);
+        dicaLabel.setFont(new Font("Arial", Font.PLAIN, 12));	
+        contentPane.add(dicaLabel);
+        
         // Botoes de tiros
         tiroPortaAviao.setBounds(340, 20, 150, 36);
-        tiroPortaAviao.setFont(new Font("Arial", Font.PLAIN, 12));
+        tiroPortaAviao.setFont(new Font("Arial", Font.BOLD, 12));
         tiroPortaAviao.setBorder(new LineBorder(Color.decode("#d20000"), 2));
         tiroPortaAviao.setForeground(Color.decode("#d20000"));
         tiroPortaAviao.addActionListener(this);
@@ -138,7 +156,7 @@ public class Jogo extends JFrame implements ActionListener {
         contentPane.add(labelTimer);
         
         // Instancia e inicializa um novo jogo
-        Jogar jogo = new Jogar();
+        jogo = new Jogar(nomeJogador);
         
         // Inicializa os tabuleiros
         this.tabuleiroJogador = new Tabuleiro(jogo, botoesTiro, true);
@@ -147,6 +165,9 @@ public class Jogo extends JFrame implements ActionListener {
         // Referencia os tabuleiros dos oponentes
         this.tabuleiroJogador.oponente(tabuleiroComputador);
         this.tabuleiroComputador.oponente(tabuleiroJogador);
+        
+        // Inicializa o contador
+        this.inicializaContador();
         
         tabuleiroJogador.setBounds(0, 90, 500, 500);
         contentPane.add(tabuleiroJogador);
@@ -159,10 +180,13 @@ public class Jogo extends JFrame implements ActionListener {
     }
     
     // Jogo definido
-    public Jogo(int[][] matrizJogador) {
+    public Jogo(String nomeJogador, int[][] matrizJogador) {
         setTitle("Batalha Naval em Java ➜ Jogo Definido");
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        // Salva o nome do Jogador
+        this.nomeJogador = nomeJogador;
         
         // Estilização do painel
         setBounds(100, 100, 1000, 630);
@@ -173,6 +197,7 @@ public class Jogo extends JFrame implements ActionListener {
         setContentPane(contentPane);
         
         // Titulo
+        labelTitulo = new JLabel("Bem vindo, " + nomeJogador);
         labelTitulo.setFont(new Font("Arial", Font.BOLD, 18));
         labelTitulo.setBounds(30, 25, 290, 29);
         contentPane.add(labelTitulo);
@@ -192,6 +217,10 @@ public class Jogo extends JFrame implements ActionListener {
         sair.setFont(new Font("Arial", Font.PLAIN, 12));
         sair.addActionListener(this);		
         contentPane.add(sair);
+        
+        dicaLabel.setBounds(190, 540, 150, 30);
+        dicaLabel.setFont(new Font("Arial", Font.PLAIN, 12));	
+        contentPane.add(dicaLabel);
         
         // Botoes de tiros
         tiroPortaAviao.setBounds(340, 20, 150, 36);
@@ -255,7 +284,7 @@ public class Jogo extends JFrame implements ActionListener {
         contentPane.add(labelTimer);
         
         // Instancia e inicializa um novo jogo definido
-        Jogar jogo = new Jogar(matrizJogador);
+        jogo = new Jogar(nomeJogador, matrizJogador);
         
         // Inicializa os tabuleiros
         this.tabuleiroJogador = new Tabuleiro(jogo, botoesTiro, true);
@@ -264,6 +293,9 @@ public class Jogo extends JFrame implements ActionListener {
         // Referencia os tabuleiros dos oponentes
         this.tabuleiroJogador.oponente(tabuleiroComputador);
         this.tabuleiroComputador.oponente(tabuleiroJogador);
+        
+        // Inicializa o contador
+        this.inicializaContador();
         
         tabuleiroJogador.setBounds(0, 90, 500, 500);
         contentPane.add(tabuleiroJogador);
@@ -283,6 +315,24 @@ public class Jogo extends JFrame implements ActionListener {
     public void setTiroSelecionado(int tiroSelecionado) {
         this.tiroSelecionado = tiroSelecionado;
     }
+    
+    // Inicializa o contador na interface
+    private void inicializaContador() {
+        timer = new Timer(1000, (ActionEvent e) -> {
+            contador++;
+            
+            // Verifica se o jogo acabou
+            if (jogo.isJogoFinalizado()) {
+                ((Timer) (e.getSource())).stop();
+                this.dispose();
+            } else {
+                labelTimer.setText(String.format("%02d:%02d", contador / 60, contador % 60));
+            }
+        });
+        
+        timer.setInitialDelay(0);
+        timer.start();
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -295,8 +345,15 @@ public class Jogo extends JFrame implements ActionListener {
             
             switch (result) {
                     case 0:
-                        // Reiniar jogo
+                        // Reinicar jogo
                         System.out.println("Reiniciar jogo");
+                        SwingUtilities.invokeLater(() -> {
+                            this.dispose();
+                            
+                            Jogo aleatorio = new Jogo(this.nomeJogador);
+                            aleatorio.setVisible(true);
+                        });
+                        
                         break;
                     case 1:
                         // Sair do jogo
@@ -314,7 +371,25 @@ public class Jogo extends JFrame implements ActionListener {
         for (int i = 0; i < botoesTiro.length; i++){
             if (e.getSource() == botoesTiro[i]) {
                 setTiroSelecionado(i);
+                this.tabuleiroComputador.tipoTiro(tiroSelecionado); 
+                botoesTiro[i].setFont(new Font("Arial", Font.BOLD, 12));
+                
+            } else {
+                botoesTiro[i].setFont(new Font("Arial", Font.PLAIN, 12));
             }
         }
+        
+        // Evento de dicas
+        if (e.getSource() == dica){
+            this.qntdDicas--;
+            dicaLabel.setText(this.qntdDicas + " restantes");
+            
+            JOptionPane.showMessageDialog(null, "Dica: " + jogo.getDica());
+            
+            if(this.qntdDicas == 0) {
+                dica.setEnabled(false);
+            }
+        }
+        
     }
 }

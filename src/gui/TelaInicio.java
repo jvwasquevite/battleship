@@ -7,21 +7,21 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class TelaInicio extends JFrame implements ActionListener {   
-    
     // Instanciando o painel inicial
-    private JPanel contentPane = new JPanel();
+    private final JPanel contentPane = new JPanel();
     
     // Campo de texto que insere o nome do johador
-    private JTextField caixaDeTexto = new JTextField(20);
+    private final JTextField caixaDeTexto = new JTextField(20);
     
     // Botoes
-    private JButton jogoAleatorio = new JButton("Jogo Aleatório");
-    private JButton jogoDefinido = new JButton("Definir Jogo");
+    private final JButton jogoAleatorio = new JButton("Jogo Aleatório");
+    private final JButton jogoDefinido = new JButton("Definir Jogo");
+    private final JButton rankingBotao = new JButton("Ranking");
     
     // Labels
-    private JLabel labelTitulo = new JLabel("Batalha Naval: POO 2020/2");
-    private JLabel labelSubtitulo = new JLabel("Criado por Diulia Deon e João Wasquevite");
-    private JLabel labelNome = new JLabel("Qual o seu nome?");
+    private final JLabel labelTitulo = new JLabel("Batalha Naval: POO 2020/2");
+    private final JLabel labelSubtitulo = new JLabel("Criado por Diulia Deon e João Wasquevite");
+    private final JLabel labelNome = new JLabel("Qual o seu nome?");
     
     // Construtor
     public TelaInicio() {
@@ -38,7 +38,7 @@ public class TelaInicio extends JFrame implements ActionListener {
         setContentPane(contentPane);
         
         // Campo de texto com o nome do jogador
-        caixaDeTexto.setBounds(133, 141, 223, 29);		
+        caixaDeTexto.setBounds(90, 140, 310, 29);		
         contentPane.add(caixaDeTexto);
         
         // Titulo do Jogo
@@ -53,17 +53,23 @@ public class TelaInicio extends JFrame implements ActionListener {
         
         // Nome do Jogador
         labelNome.setFont(new Font("Arial", Font.PLAIN, 14));
-        labelNome.setBounds(135, 116, 150, 14);
+        labelNome.setBounds(90, 115, 150, 14);
         contentPane.add(labelNome);
         
+        // Botão do Ranking
+        rankingBotao.setBounds(200, 270, 90, 25);
+        rankingBotao.setFont(new Font("Arial", Font.PLAIN, 12));	
+        rankingBotao.addActionListener(this);		
+        contentPane.add(rankingBotao);
+        
         // Botão de Jogo Aleatório
-        jogoAleatorio.setBounds(90, 238, 150, 36);
+        jogoAleatorio.setBounds(90, 175, 150, 36);
         jogoAleatorio.setFont(new Font("Arial", Font.PLAIN, 12));		
         jogoAleatorio.addActionListener(this);		
         contentPane.add(jogoAleatorio);
         
         // Botão de Jogo Definido
-        jogoDefinido.setBounds(250, 238, 150, 36);
+        jogoDefinido.setBounds(250, 175, 150, 36);
         jogoDefinido.setFont(new Font("Arial", Font.PLAIN, 12));	
         jogoDefinido.addActionListener(this);		
         contentPane.add(jogoDefinido);
@@ -73,48 +79,52 @@ public class TelaInicio extends JFrame implements ActionListener {
         
     }
     
-    // Configurando as actions dos botoes
     @Override
     public void actionPerformed(ActionEvent e) {
+        // Guarda o nome do jogador em uma string
+        String nome = caixaDeTexto.getText();
         
         // Evento de Jogo Aleatório
         if (e.getSource() == jogoAleatorio){
-            String nome = caixaDeTexto.getText();
-            
             // Verificacao de nome vazio
             if (nome.equals("")){
                 JOptionPane.showMessageDialog(null, "Digite um nome válido");
             } else if (!(nome.equals(""))){
                 // Iniciando um Jogo Aleatório
                 SwingUtilities.invokeLater(() -> {						
-                    Jogo aleatorio = new Jogo();
+                    Jogo aleatorio = new Jogo(nome);
                     aleatorio.setVisible(true);
                 });
                 
                 caixaDeTexto.setText("");
                 this.dispose();
             }
-            
         }
         
         // Evento de Jogo Definido
         if (e.getSource() == jogoDefinido){
-            String nome = caixaDeTexto.getText();
-            
             // Verificacao de nome vazio
             if (nome.equals("")){
                 JOptionPane.showMessageDialog(null, "Digite um nome válido");
             } else if (!(nome.equals(""))){
                 // Iniciando um Jogo Definido
                 SwingUtilities.invokeLater(() -> {						
-                    DefinirJogo definir = new DefinirJogo();
+                    DefinirJogo definir = new DefinirJogo(nome);
                     definir.setVisible(true);
                 });
                 
                 caixaDeTexto.setText("");
                 this.dispose();
             }
+        }
+        
+        if (e.getSource() == rankingBotao){
+            SwingUtilities.invokeLater(() -> {
+                Ranking ranking = new Ranking();
+                ranking.setVisible(true);
+            });
             
+            this.dispose();
         }
     }
     

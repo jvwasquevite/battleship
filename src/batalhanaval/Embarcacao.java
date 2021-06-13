@@ -1,7 +1,7 @@
 package batalhanaval;
 
 public interface Embarcacao {
-    public String getNomeEmbarcacao();
+    public abstract String getNomeEmbarcacao();
     public int getTamanhoEmbarcacao();
     public void setTamanhoEmbarcacao(int tamanho);
     public boolean getStatusEmbarcacao();

@@ -21,7 +21,7 @@ public class DefinirJogo extends JFrame implements ActionListener {
     private final JButton[] botoesEmbarcacoes = new JButton[4];
     
     // Labels
-    private final JLabel labelTitulo = new JLabel("Defina o seu Jogo");
+    private final JLabel labelTitulo;
     private final JLabel labelSubtitulo = new JLabel("Insira as embarcações em seu tabuleiro.");
     
     // Botoes
@@ -39,10 +39,13 @@ public class DefinirJogo extends JFrame implements ActionListener {
     
     DefineJogo define = new DefineJogo();
     
-    public DefinirJogo() {
+    private String nomeJogador;
+    
+    public DefinirJogo(String nomeJogador) {
         setTitle("Batalha Naval em Java ➜ Definir Jogo");
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.nomeJogador = nomeJogador;
         
         // Estilização do painel
         setBounds(100, 100, 830, 650);
@@ -53,6 +56,7 @@ public class DefinirJogo extends JFrame implements ActionListener {
         setContentPane(contentPane);
         
         // Titulo
+        labelTitulo = new JLabel("Olá, " + nomeJogador);
         labelTitulo.setFont(new Font("Arial", Font.BOLD, 18));
         labelTitulo.setBounds(30, 20, 290, 29);
         contentPane.add(labelTitulo);
@@ -224,7 +228,7 @@ public class DefinirJogo extends JFrame implements ActionListener {
         if (e.getSource() == iniciarJogo){
             SwingUtilities.invokeLater(() -> {
                 this.dispose();
-                Jogo definido = new Jogo(matriz);
+                Jogo definido = new Jogo(nomeJogador, matriz);
                 definido.setVisible(true);
             });
         }
