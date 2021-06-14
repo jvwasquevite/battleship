@@ -16,6 +16,7 @@ public class Jogar {
     private Timer timer;
     private int segundos;
     
+    private int contadorRodadas = 0;
     private boolean jogoFinalizado = false;
     
     // Construtor para jogo aleatorio
@@ -97,23 +98,25 @@ public class Jogar {
     }
     
     // Finaliza o jogo
-    public void finalizarJogo() {
+    public void finalizarJogo(boolean ganhou) {
         this.jogoFinalizado = true;
         
-        // Grava o tempo final do jogador
-        jogador.setTempo(segundos);
-        
-        // Grava o jogador em um ArrayList
-        insereJogador.adicionaJogador(jogador);
-        
-        // Grava a lista de jogadores no arquivo
-        insereJogador.insereNoArquivo();
+        if(ganhou) {
+            // Grava o tempo final do jogador
+            jogador.setTempo(segundos);
+
+            // Grava o jogador em um ArrayList
+            insereJogador.adicionaJogador(jogador);
+
+            // Grava a lista de jogadores no arquivo
+            insereJogador.insereNoArquivo();
+        }
     }
     
     public String getDica() {
         for(int i=0; i < 10; i++) {
             for(int j=0; j < 10; j++) {
-                if(matrizComputador[i][j] != 0) {
+                if(matrizComputador[i][j] != 0 && matrizComputador[i][j] != 5) {
                     return String.format((i+1) + "x" + (j+1));
                 }
             }
@@ -122,30 +125,24 @@ public class Jogar {
         return "";
     }
     
-    public boolean vezJogador(int linha, int coluna, int tipoTiro) {
-        System.out.println("Tipo tiro: " + tipoTiro);
-        
-        switch (tipoTiro) {
-            case 0:
-                return tiroUnico(linha, coluna, matrizComputador, embComputador);
-            case 1:
-                return tiroUnico(linha, coluna, matrizComputador, embComputador);
-            case 2:
-                return tiroDuplo(linha, coluna, matrizComputador, embComputador);
-            case 3:
-                return tiroUnico(linha, coluna, matrizComputador, embComputador);
-        }
-        
-        return false;
+    public boolean tiroJogador(int linha, int coluna) {
+        return atirar(linha, coluna, matrizComputador, embComputador);
     }
     
-    public boolean tiroUnico(int linha, int coluna, int[][] matriz, ArrayList<Embarcacao> embarcacoes) {
-        if (matriz[linha][coluna] == 0) {
-            System.out.println("> " + linha + "x" + coluna + ": Você errou.");
-            return false;
+    public void tiroComputador(int linha, int coluna) {
+        atirar(linha, coluna, matrizJogador, embJogador);
+    }
+    
+    public boolean atirar(int linha, int coluna, int[][] matriz, ArrayList<Embarcacao> embarcacoes) {
+        if (matriz[linha][coluna] == 0 || matriz[linha][coluna] == 5) {
+            System.out.println("> " + linha + "x" + coluna + ": Errou.");
             
-        } else if (matriz[linha][coluna] != 0) {
-            System.out.println("> " + linha + "x" + coluna + ": Você acertou.");
+            // Insere 5 na posicao atingida
+            matriz[linha][coluna] = 5;
+            
+            return false;
+        } else if (matriz[linha][coluna] != 0 || matriz[linha][coluna] == 5) {
+            System.out.println("> " + linha + "x" + coluna + ": Acertou.");
             
             // Explode a embarcacao do computador
             switch (matriz[linha][coluna]) {
@@ -163,17 +160,16 @@ public class Jogar {
                     break;
             }
             
-            // Zera a posicao onde estava a embarcacao explodida
-            matriz[linha][coluna] = 0;
+            // Insere 5 na embarcacao atingida
+            matriz[linha][coluna] = 5;
             
-            // Printa as embarcacoes
+            // Printa as embarcacoes quando acerta
             System.out.println("[UPDATE]: Embarcacacoes oponente:");
             for (int i = 0; i < embarcacoes.size(); i++) {
                 System.out.print(embarcacoes.get(i) + ": ");
                 embarcacoes.get(i).ler();
             }
             
-            // Printa as embarcacoes
             System.out.println("[UPDATE]: Matriz oponente:");
             for(int i=0; i<10; i++) {
                 for(int j=0; j<10; j++) {
@@ -189,94 +185,22 @@ public class Jogar {
         return false;
     }
     
-    public boolean tiroDuplo(int linha, int coluna, int[][] matriz, ArrayList<Embarcacao> embarcacoes) {
-        if (matriz[linha][coluna] == 0) {
-            System.out.println("> " + linha + "x" + coluna + ": Você errou.");
-            return false;
-            
-        }else if (matriz[linha][coluna] != 0) {
-            System.out.println("> " + linha + "x" + coluna + ": Você acertou.");
-            
-            // Explode a embarcacao do computador
-            switch (matriz[linha][coluna]) {
-                case 1: // PortaAviao
-                    embarcacoes.get(0).explodirEmbarcacao();
-                    break;
-                case 2: // Submarino
-                    embarcacoes.get(1).explodirEmbarcacao();
-                    break;
-                case 3: // NavioEscolta
-                    embarcacoes.get(2).explodirEmbarcacao();
-                    break;
-                case 4: // AviaoCaca
-                    embarcacoes.get(3).explodirEmbarcacao();
-                    break;
+    // Verifica posicao do tiro do computador para nao atirar novamente no mesmo local
+    public boolean verificaTiro(int linha, int coluna) {
+        for (int i=0; i<10; i++) {
+            for (int j=0; j<10; j++) {
+                // Testa se a posicao ja foi atingida anteriormente
+                return matrizJogador[linha][coluna] != 5;
             }
-            
-            // Zera a posicao onde estava a embarcacao explodida
-            matriz[linha][coluna] = 0;
-            
-            // Printa as embarcacoes
-            System.out.println("[UPDATE]: Embarcacacoes oponente:");
-            for (int i = 0; i < embarcacoes.size(); i++) {
-                System.out.print(embarcacoes.get(i) + ": ");
-                embarcacoes.get(i).ler();
-            }
-            
-            // Printa as embarcacoes
-            System.out.println("[UPDATE]: Matriz oponente:");
-            for(int i=0; i<10; i++) {
-                for(int j=0; j<10; j++) {
-                    System.out.print(matriz[i][j]);
-                }
-                System.out.print("\n");
-            }
-            System.out.print("\n");
-
-            return true;
         }
         
         return false;
     }
     
-    public boolean vezComputador(int linha, int coluna) {
-        if (matrizJogador[linha][coluna] == 0) {
-            System.out.println("> " + linha + "x" + coluna + ": Computador errou.");
-            
-            return false;
-        }else if (matrizJogador[linha][coluna] != 0) {
-            System.out.println("> " + linha + "x" + coluna + ": Computador acertou.");
-            
-            // Explode a embarcacao do jogador
-            switch (matrizJogador[linha][coluna]) {
-                case 1: // PortaAviao
-                    embJogador.get(0).explodirEmbarcacao();
-                    break;
-                case 2: // Submarino
-                    embJogador.get(1).explodirEmbarcacao();
-                    break;
-                case 3: // NavioEscolta
-                    embJogador.get(2).explodirEmbarcacao();
-                    break;
-                case 4: // AviaoCaca
-                    embJogador.get(3).explodirEmbarcacao();
-                    break;
-            }
-            
-            // Zera a posicao onde estava a embarcacao explodida
-            matrizJogador[linha][coluna] = 0;
-            
-            // Printa as embarcacoes do jogador
-            System.out.println("[UPDATE]: Embarcacacoes jogador:");
-            for (int i = 0; i < embJogador.size(); i++) {
-                System.out.print(embJogador.get(i) + ": ");
-                embJogador.get(i).ler();
-            }
-
-            return true;
-        }
-        
-        return false;
+    // Verifica rodadas do tiroAviao
+    public boolean verificaRodadasTiroAviao(int rodadaInicial) {
+        int rodadaFinal = rodadaInicial + 2;
+        return rodadaFinal == this.getContadorRodadas();
     }
     
     public boolean jogadorGanhou() {
@@ -284,7 +208,7 @@ public class Jogar {
         
         for(int i = 0; i < 10; i++) {
             for(int j = 0; j < 10; j++) {
-                if(matrizComputador[i][j] == 0) {
+                if(matrizComputador[i][j] == 0 || matrizComputador[i][j] == 5) {
                     contador++;
                 }
             }
@@ -303,7 +227,7 @@ public class Jogar {
         
         for(int i = 0; i < 10; i++) {
             for(int j = 0; j < 10; j++) {
-                if(matrizJogador[i][j] == 0) {
+                if(matrizJogador[i][j] == 0 || matrizJogador[i][j] == 5) {
                     contador++;
                 }
             }
@@ -343,6 +267,14 @@ public class Jogar {
 
     public void setMatrizComputador(int[][] matrizComputador) {
         this.matrizComputador = matrizComputador;
+    }
+
+    public int getContadorRodadas() {
+        return contadorRodadas;
+    }
+
+    public void setContadorRodadas(int contadorRodadas) {
+        this.contadorRodadas = contadorRodadas;
     }
 
     public boolean isJogoFinalizado() {

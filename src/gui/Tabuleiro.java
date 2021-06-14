@@ -32,7 +32,7 @@ public class Tabuleiro extends JPanel implements ActionListener {
     private final JButton[] botoesTiro;
     private int tipoTiro;
     
-    private int contadorRodadas;
+    private int rodadaTiroAviao = 0;
     
     public Tabuleiro(Jogar jogo, JButton[] botoesTiro, boolean visible){
         this.jogo = jogo;
@@ -84,6 +84,7 @@ public class Tabuleiro extends JPanel implements ActionListener {
                     Botoes[linha][coluna].setPreferredSize(new Dimension(40, 40));
                     Botoes[linha][coluna].setFont(new Font("Arial", Font.PLAIN, 8));
                     Botoes[linha][coluna].setFocusable(false);
+                        
                     grid.add(Botoes[linha][coluna]);
                 }
             }
@@ -106,83 +107,186 @@ public class Tabuleiro extends JPanel implements ActionListener {
         for (int linha = 0; linha < 10; linha++){
             for (int coluna = 0; coluna < 10; coluna++) {
                 if (e.getSource() == Botoes[linha][coluna]) {
-                    contadorRodadas++;
-                    System.out.println("\nNOVO ROUND:");
+                    System.out.println("\nNOVO ROUND [" + jogo.getContadorRodadas() + "]:");
+                    System.out.println("Seu tiro: " + botoesTiro[tipoTiro].getText());
                     
-                    // Implementa a jogada do Jogador
-                    if(jogo.vezJogador(linha, coluna, tipoTiro)) {
-                        switch (tipoTiro) {
-                            case 0: // Unico a cada duas todadas
-                                Botoes[linha][coluna].setEnabled(false);
+                    // Implementa a jogada do Jogador com testes de index
+                    switch(tipoTiro) {
+                        case 0: // Tiro unico de 2 em 2 rodadas
+                            Botoes[linha][coluna].setEnabled(false);
+                            if (jogo.tiroJogador(linha, coluna)) {
                                 Botoes[linha][coluna].setIcon(new ImageIcon(DefinirJogo.class.getResource("/gui/imagens/explosao.png")));
-                                botoesTiro[0].setEnabled(false);
-                                break;
-                            case 1: // Unico
-                                Botoes[linha][coluna].setEnabled(false);
+                            }
+                            
+                            // Armazena a rodada do tiro
+                            rodadaTiroAviao = jogo.getContadorRodadas();
+                            botoesTiro[0].setEnabled(false);
+                            botoesTiro[0].setFont(new Font("Arial", Font.PLAIN, 12));
+                            
+                            this.tipoTiro = 1;
+                            botoesTiro[1].setEnabled(true);
+                            botoesTiro[1].setFont(new Font("Arial", Font.BOLD, 12));
+                            break;
+                        case 1: // Tiro unico
+                            Botoes[linha][coluna].setEnabled(false);
+                            if (jogo.tiroJogador(linha, coluna)) {
                                 Botoes[linha][coluna].setIcon(new ImageIcon(DefinirJogo.class.getResource("/gui/imagens/explosao.png")));
-                                break;
-                            case 2: // Duplo
-                                for (int  i=0; i<2; i++) {
-                                    Botoes[linha][coluna++].setEnabled(false);
-                                    Botoes[linha][coluna++].setIcon(new ImageIcon(DefinirJogo.class.getResource("/gui/imagens/explosao.png")));
-                                }
-                                break;
-                            case 3: // Estrela
-                                Botoes[linha][coluna].setEnabled(false);
+                            }
+                            break;
+                        case 2: // Tiro duplo
+                            // Centro
+                            Botoes[linha][coluna].setEnabled(false);
+                            if (jogo.tiroJogador(linha, coluna)) {
                                 Botoes[linha][coluna].setIcon(new ImageIcon(DefinirJogo.class.getResource("/gui/imagens/explosao.png")));
-                                break;
-                        }                  
-                    } else {
-                        // Se errou
-                        switch (tipoTiro) {
-                            case 0: // Unico a cada duas todadas
-                                Botoes[linha][coluna].setEnabled(false);
-                                break;
-                            case 1: // Unico
-                                Botoes[linha][coluna].setEnabled(false);
-                                break;
-                            case 2: // Duplo
-                                    if(coluna < 9) {
-                                        for (int  i=0; i<2; i++) {
-                                            Botoes[linha][coluna++].setEnabled(false);
-                                        } 
-                                    } else {
-                                        Botoes[linha][coluna].setEnabled(false);
-                                    }
-                                break;
-                            case 3: // Estrela
-                                Botoes[linha][coluna].setEnabled(false);
+                            }
+                            
+                            // Direito
+                            if(!((coluna+1) == 10)) {
                                 Botoes[linha][coluna+1].setEnabled(false);
+                                if (jogo.tiroJogador(linha, coluna+1)) {
+                                    Botoes[linha][coluna+1].setIcon(new ImageIcon(DefinirJogo.class.getResource("/gui/imagens/explosao.png")));
+                                }
+                            }
+                            break;
+                        case 3: // Tiro estrela
+                            // Centro
+                            Botoes[linha][coluna].setEnabled(false);
+                            if (jogo.tiroJogador(linha, coluna)) {
+                                Botoes[linha][coluna].setIcon(new ImageIcon(DefinirJogo.class.getResource("/gui/imagens/explosao.png")));
+                            }
+                            
+                            // Direito
+                            if(!((coluna+1) == 10)) {
+                                Botoes[linha][coluna+1].setEnabled(false);
+                                if (jogo.tiroJogador(linha, coluna+1)) {
+                                    Botoes[linha][coluna+1].setIcon(new ImageIcon(DefinirJogo.class.getResource("/gui/imagens/explosao.png")));
+                                }
+                            }
+                            
+                            // Esquerdo
+                            if(!((coluna-1) == -1)) {
                                 Botoes[linha][coluna-1].setEnabled(false);
-                                Botoes[linha+1][coluna].setEnabled(false);
+                                if (jogo.tiroJogador(linha, coluna-1)) {
+                                    Botoes[linha][coluna-1].setIcon(new ImageIcon(DefinirJogo.class.getResource("/gui/imagens/explosao.png")));
+                                }
+                            }
+
+                            // Topo
+                            if(!((linha-1) == -1)) {
                                 Botoes[linha-1][coluna].setEnabled(false);
-                                break;
-                        }
+                                if (jogo.tiroJogador(linha-1, coluna)) {
+                                    Botoes[linha-1][coluna].setIcon(new ImageIcon(DefinirJogo.class.getResource("/gui/imagens/explosao.png")));
+                                }
+                            }
+                            
+                            // Baixo
+                            if(!((linha+1) == 10)) {
+                                Botoes[linha+1][coluna].setEnabled(false);
+                                if (jogo.tiroJogador(linha+1, coluna)) {
+                                    Botoes[linha+1][coluna].setIcon(new ImageIcon(DefinirJogo.class.getResource("/gui/imagens/explosao.png")));
+                                }
+                            }
+                            break;
                     }
-                    
+
                     // Implementa a jogada do Computador
                     Random sorteio = new Random();
                     int linhaSort = sorteio.nextInt(10);
                     int colunaSort = sorteio.nextInt(10);
+                    int tiroSort = sorteio.nextInt(4);
                     
-                    if(jogo.vezComputador(linhaSort, colunaSort)) {
-                        // Se acertou
-                        tabOponente.Botoes[linhaSort][colunaSort].setIcon(new ImageIcon(DefinirJogo.class.getResource("/gui/imagens/explosao.png")));
-                        
-                        // Testa se tem alguma embarcacao totalmente atingida
-                        for(int i = 0; i < 4; i++) {
-                            if(jogo.getEmbJogador().get(i).getTamanhoEmbarcacao() == 0) {
-                                botoesTiro[i].setEnabled(false);
-                            }
+                    System.out.println("Tiro do oponente: " + botoesTiro[tiroSort].getText());
+                    
+                    // Verifica se a posicao sorteada ja nao foi atingida
+                    boolean verifica = jogo.verificaTiro(linhaSort, colunaSort);
+                    
+                    if(verifica == false) {
+                        while(verifica == false) {
+                            linhaSort = sorteio.nextInt(10);
+                            colunaSort = sorteio.nextInt(10);
+                            
+                            verifica = jogo.verificaTiro(linhaSort, colunaSort);
                         }
-                    } else {
-                        // Se errou
-                        tabOponente.Botoes[linhaSort][colunaSort].setIcon(new ImageIcon(DefinirJogo.class.getResource("/gui/imagens/explosao.png")));
+                    }
+                    
+                    switch(tiroSort) {
+                        case 0: // Tiro unico de 2 em 2 rodadas
+                            tabOponente.Botoes[linhaSort][colunaSort].setEnabled(false);
+                            jogo.tiroComputador(linhaSort, colunaSort);
+                            tabOponente.Botoes[linhaSort][colunaSort].setIcon(new ImageIcon(DefinirJogo.class.getResource("/gui/imagens/explosao.png")));
+                            break;
+                        case 1: // Tiro unico
+                            tabOponente.Botoes[linhaSort][colunaSort].setEnabled(false);
+                            jogo.tiroComputador(linhaSort, colunaSort);
+                            tabOponente.Botoes[linhaSort][colunaSort].setIcon(new ImageIcon(DefinirJogo.class.getResource("/gui/imagens/explosao.png")));
+                            break;
+                        case 2: // Tiro duplo
+                            // Centro
+                            tabOponente.Botoes[linhaSort][colunaSort].setEnabled(false);
+                            jogo.tiroComputador(linhaSort, colunaSort);
+                            tabOponente.Botoes[linhaSort][colunaSort].setIcon(new ImageIcon(DefinirJogo.class.getResource("/gui/imagens/explosao.png")));
+                            
+                            // Direito
+                            if(!((colunaSort+1) == 10)) {
+                                tabOponente.Botoes[linhaSort][colunaSort+1].setEnabled(false);
+                                jogo.tiroComputador(linhaSort, colunaSort+1);
+                                tabOponente.Botoes[linhaSort][colunaSort+1].setIcon(new ImageIcon(DefinirJogo.class.getResource("/gui/imagens/explosao.png")));
+                            }
+                            break;
+                        case 3: // Tiro estrela
+                            // Centro
+                            tabOponente.Botoes[linhaSort][colunaSort].setEnabled(false);
+                            jogo.tiroComputador(linhaSort, colunaSort);
+                            tabOponente.Botoes[linhaSort][colunaSort].setIcon(new ImageIcon(DefinirJogo.class.getResource("/gui/imagens/explosao.png")));
+                            
+                            // Direito
+                            if(!((colunaSort+1) == 10)) {
+                                tabOponente.Botoes[linhaSort][colunaSort+1].setEnabled(false);
+                                jogo.tiroComputador(linhaSort, colunaSort+1);
+                                tabOponente.Botoes[linhaSort][colunaSort+1].setIcon(new ImageIcon(DefinirJogo.class.getResource("/gui/imagens/explosao.png")));
+                            }
+                            
+                            // Esquerdo
+                            if(!((colunaSort-1) == -1)) {
+                                tabOponente.Botoes[linhaSort][colunaSort-1].setEnabled(false);
+                                jogo.tiroComputador(linhaSort, colunaSort-1);
+                                tabOponente.Botoes[linhaSort][colunaSort-1].setIcon(new ImageIcon(DefinirJogo.class.getResource("/gui/imagens/explosao.png")));
+                            }
+
+                            // Topo
+                            if(!((linhaSort-1) == -1)) {
+                                tabOponente.Botoes[linhaSort-1][colunaSort].setEnabled(false);
+                                jogo.tiroComputador(linhaSort-1, colunaSort);
+                                tabOponente.Botoes[linhaSort-1][colunaSort].setIcon(new ImageIcon(DefinirJogo.class.getResource("/gui/imagens/explosao.png")));
+                            }
+                            
+                            // Baixo
+                            if(!((linhaSort+1) == 10)) {
+                                tabOponente.Botoes[linhaSort+1][colunaSort].setEnabled(false);
+                                jogo.tiroComputador(linhaSort+1, colunaSort);
+                                tabOponente.Botoes[linhaSort+1][colunaSort].setIcon(new ImageIcon(DefinirJogo.class.getResource("/gui/imagens/explosao.png")));
+                            }
+                            
+                            break;
+                    }
+                    
+                    // Testa se existe alguma embarcacao totalmente atingida
+                    for(int i=0; i<4; i++) {
+                        if(jogo.getEmbJogador().get(i).getTamanhoEmbarcacao() == 0) {
+                            botoesTiro[i].setEnabled(false);
+                        }
+                    }
+                    
+                    // Testa se ja passou duas rodadas
+                    if(!botoesTiro[0].isEnabled()) {
+                        if(jogo.verificaRodadasTiroAviao(rodadaTiroAviao)) {
+                            botoesTiro[0].setEnabled(true);
+                        }
                     }
                     
                     // Testa se alguem ganhou
                     if(jogo.jogadorGanhou()) {
-                        jogo.finalizarJogo();
+                        jogo.finalizarJogo(true);
                         
                         String tempoFinal = String.format("%02d:%02d", jogo.getTempoFinal() / 60, jogo.getTempoFinal() % 60);
                         Object[] options = {"Jogar novamente", "Ver ranking"};
@@ -208,9 +312,33 @@ public class Tabuleiro extends JPanel implements ActionListener {
                     }
                     
                     if(jogo.computadorGanhou()) {
-                        jogo.finalizarJogo();
-                        JOptionPane.showMessageDialog(null, "Você perdeu.");
+                        jogo.finalizarJogo(false);
+                        
+                        String tempoFinal = String.format("%02d:%02d", jogo.getTempoFinal() / 60, jogo.getTempoFinal() % 60);
+                        Object[] options = {"Jogar novamente", "Ver ranking"};
+                        
+                        int result = JOptionPane.showOptionDialog(null,"Você perdeu. \n" + "Tempo final: " + tempoFinal, "Jogo finalizado",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+
+                        switch (result) {
+                            case 0:
+                                // Sair do jogo
+                                SwingUtilities.invokeLater(() -> {
+                                    TelaInicio inicio = new TelaInicio();
+                                    inicio.setVisible(true);
+                                });
+                                break;
+                            case 1:
+                                SwingUtilities.invokeLater(() -> {
+                                    Ranking ranking = new Ranking();
+                                    ranking.setVisible(true);
+                                });
+                                break;
+                        }
                     }
+                    
+                    // Incrementa o numero de rodadas
+                    jogo.setContadorRodadas(jogo.getContadorRodadas()+1);
                 }
             }
         }
