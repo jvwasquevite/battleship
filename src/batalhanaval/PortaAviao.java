@@ -3,12 +3,10 @@ package batalhanaval;
 public class PortaAviao implements Embarcacao {
     private final String nomeEmbarcacao;
     private int tamanhoEmbarcacao;
-    private boolean statusEmbarcacao;
 
     public PortaAviao() {
         this.nomeEmbarcacao = "Porta Avião";
         this.tamanhoEmbarcacao = 4;
-        this.statusEmbarcacao = true;
     }
     
     @Override
@@ -25,16 +23,6 @@ public class PortaAviao implements Embarcacao {
     public void setTamanhoEmbarcacao(int tamanho) {
         this.tamanhoEmbarcacao = tamanho;
     }
-    
-    @Override
-    public boolean getStatusEmbarcacao() {
-        return statusEmbarcacao;
-    }
-    
-    @Override
-    public void setStatusEmbarcacao(boolean status) {
-        this.statusEmbarcacao = status;
-    }
 
     @Override
     public void explodirEmbarcacao() {
@@ -43,6 +31,6 @@ public class PortaAviao implements Embarcacao {
     
     @Override
     public void ler() {
-        System.out.println("{" + "nomeEmbarcacao=" + nomeEmbarcacao + ", tamanhoEmbarcacao=" + tamanhoEmbarcacao + ", statusEmbarcacao=" + statusEmbarcacao + "}");
+        System.out.println("{" + "nomeEmbarcacao=" + nomeEmbarcacao + ", tamanhoEmbarcacao=" + tamanhoEmbarcacao + "}");
     }
 }

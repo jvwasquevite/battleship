@@ -21,7 +21,7 @@ public class DefineJogo {
     }
     
     // Determina o tamanho da embarcacao
-    public int getTamanho(int tipoEmbarcacao) {
+    private int getTamanho(int tipoEmbarcacao) {
         switch (tipoEmbarcacao) {
                 case 1: // Porta aviao
                     return 4;

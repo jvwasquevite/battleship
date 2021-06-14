@@ -8,7 +8,6 @@ public class Submarino implements Embarcacao {
     public Submarino() {
         this.nomeEmbarcacao = "Submarino";
         this.tamanhoEmbarcacao = 2;
-        this.statusEmbarcacao = true;
     }
     
     @Override
@@ -25,16 +24,6 @@ public class Submarino implements Embarcacao {
     public void setTamanhoEmbarcacao(int tamanho) {
         this.tamanhoEmbarcacao = tamanho;
     }
-    
-    @Override
-    public boolean getStatusEmbarcacao() {
-        return statusEmbarcacao;
-    }
-    
-    @Override
-    public void setStatusEmbarcacao(boolean status) {
-        this.statusEmbarcacao = status;
-    }
 
     @Override
     public void explodirEmbarcacao() {
@@ -43,6 +32,6 @@ public class Submarino implements Embarcacao {
     
     @Override
     public void ler() {
-        System.out.println("{" + "nomeEmbarcacao=" + nomeEmbarcacao + ", tamanhoEmbarcacao=" + tamanhoEmbarcacao + ", statusEmbarcacao=" + statusEmbarcacao + "}");
+        System.out.println("{" + "nomeEmbarcacao=" + nomeEmbarcacao + ", tamanhoEmbarcacao=" + tamanhoEmbarcacao + "}");
     }
 }
