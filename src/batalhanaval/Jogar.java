@@ -24,8 +24,8 @@ public class Jogar {
         SorteiaJogo sorteioJogador = new SorteiaJogo();
         SorteiaJogo sorteioComputador = new SorteiaJogo();
     
-        this.embJogador = new ArrayList();
-        this.embComputador = new ArrayList();
+        this.embJogador = new ArrayList<Embarcacao>();
+        this.embComputador = new ArrayList<Embarcacao>();
        
         embJogador.add(new PortaAviao());
         embJogador.add(new Submarino());
@@ -53,8 +53,8 @@ public class Jogar {
     public Jogar(String nomeJogador, int[][] matriz) {
         SorteiaJogo sorteioComputador = new SorteiaJogo();
     
-        this.embJogador = new ArrayList();
-        this.embComputador = new ArrayList();
+        this.embJogador = new ArrayList<Embarcacao>();
+        this.embComputador = new ArrayList<Embarcacao>();;
        
         embJogador.add(new PortaAviao());
         embJogador.add(new Submarino());

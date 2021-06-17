@@ -19,7 +19,7 @@ import java.util.Random;
 public class Tabuleiro extends JPanel implements ActionListener {
     private final JPanel contentPane;
     private final JPanel grid = new JPanel();
-    private final JButton[][] Botoes;
+    private final Botao[][] Botoes;
     
     // Atributos com o jogo e a matriz gerada
     private final Jogar jogo;
@@ -37,7 +37,7 @@ public class Tabuleiro extends JPanel implements ActionListener {
     public Tabuleiro(Jogar jogo, JButton[] botoesTiro, boolean visible){
         this.jogo = jogo;
         this.contentPane = new JPanel();
-        this.Botoes = new JButton[10][10];
+        this.Botoes = new Botao[10][10];
         this.botoesTiro = botoesTiro;
         
         contentPane.setBackground(Color.decode("#999999"));
@@ -49,7 +49,7 @@ public class Tabuleiro extends JPanel implements ActionListener {
             
             for (int linha = 0; linha < 10; linha++){
                 for (int coluna = 0; coluna < 10; coluna++){
-                    Botoes[linha][coluna] = new JButton("");
+                    Botoes[linha][coluna] = new Botao();
                     Botoes[linha][coluna].setPreferredSize(new Dimension(40, 40));
                     Botoes[linha][coluna].setFont(new Font("Arial", Font.PLAIN, 8));
                     Botoes[linha][coluna].setFocusable(true);
@@ -79,7 +79,7 @@ public class Tabuleiro extends JPanel implements ActionListener {
             
             for (int linha = 0; linha < 10; linha++){
                 for (int coluna = 0; coluna < 10; coluna++){
-                    Botoes[linha][coluna] = new JButton("");
+                    Botoes[linha][coluna] = new Botao();
                     Botoes[linha][coluna].addActionListener(this);
                     Botoes[linha][coluna].setPreferredSize(new Dimension(40, 40));
                     Botoes[linha][coluna].setFont(new Font("Arial", Font.PLAIN, 8));
