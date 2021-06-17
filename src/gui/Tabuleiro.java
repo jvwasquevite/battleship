@@ -29,69 +29,80 @@ public class Tabuleiro extends JPanel implements ActionListener {
     private Tabuleiro tabOponente;
     
     // Botoes de tiros
-    private final JButton[] botoesTiro;
+    private JButton[] botoesTiro;
     private int tipoTiro;
     
     private int rodadaTiroAviao = 0;
-    
-    public Tabuleiro(Jogar jogo, JButton[] botoesTiro, boolean visible){
-        this.jogo = jogo;
-        this.contentPane = new JPanel();
-        this.Botoes = new Botao[10][10];
-        this.botoesTiro = botoesTiro;
-        
-        contentPane.setBackground(Color.decode("#999999"));
-        grid.setLayout(new GridLayout(10, 10, 0, 0));
-        
-        if (visible == true) {
-            // Tabuleiro do jogador
-            this.matriz = jogo.getMatrizJogador();
-            
-            for (int linha = 0; linha < 10; linha++){
-                for (int coluna = 0; coluna < 10; coluna++){
-                    Botoes[linha][coluna] = new Botao();
-                    Botoes[linha][coluna].setPreferredSize(new Dimension(40, 40));
-                    Botoes[linha][coluna].setFont(new Font("Arial", Font.PLAIN, 8));
-                    Botoes[linha][coluna].setFocusable(true);
-                    Botoes[linha][coluna].setEnabled(false);
-                    
-                    switch (matriz[linha][coluna]) {
-                        case 1:
-                            Botoes[linha][coluna].setBackground(Color.decode("#d20000"));
-                            break;
-                        case 2:
-                            Botoes[linha][coluna].setBackground(Color.decode("#1c52bb"));
-                            break;
-                        case 3:
-                            Botoes[linha][coluna].setBackground(Color.decode("#019131"));
-                            break;
-                        case 4:
-                            Botoes[linha][coluna].setBackground(Color.decode("#962879"));
-                            break;
-                    }
 
-                    grid.add(Botoes[linha][coluna]);
-                }
-            }
-        } else {
-            // Tabuleiro do computador
-            this.matriz = jogo.getMatrizComputador();
-            
-            for (int linha = 0; linha < 10; linha++){
-                for (int coluna = 0; coluna < 10; coluna++){
-                    Botoes[linha][coluna] = new Botao();
-                    Botoes[linha][coluna].addActionListener(this);
-                    Botoes[linha][coluna].setPreferredSize(new Dimension(40, 40));
-                    Botoes[linha][coluna].setFont(new Font("Arial", Font.PLAIN, 8));
-                    Botoes[linha][coluna].setFocusable(false);
-                        
-                    grid.add(Botoes[linha][coluna]);
-                }
-            }
+    // Construtor da interface
+    public Tabuleiro(Jogar jogo, int[][] matriz) {
+      this.contentPane = new JPanel();
+      this.Botoes = new Botao[10][10];
+
+      this.jogo = jogo;
+      this.matriz = matriz;
+
+      contentPane.setBackground(Color.decode("#999999"));
+      grid.setLayout(new GridLayout(10, 10, 0, 0));
+
+      for (int linha = 0; linha < 10; linha++){
+        for (int coluna = 0; coluna < 10; coluna++){
+            Botoes[linha][coluna] = new Botao();
+            Botoes[linha][coluna].setPreferredSize(new Dimension(40, 40));
+            Botoes[linha][coluna].setFont(new Font("Arial", Font.PLAIN, 8));
+                
+            grid.add(Botoes[linha][coluna]);
         }
-        
-        contentPane.add(grid);
-        add(contentPane);
+      }
+
+      contentPane.add(grid);
+      add(contentPane);
+    }
+    
+    // Construtor do tabuleiro do jogador
+    public Tabuleiro(Jogar jogo){
+      this(jogo, jogo.getMatrizJogador()); // Chama o construtor da interface
+      
+      // Estiliza o tabuleiro do jogador
+      for (int linha = 0; linha < 10; linha++){
+        for (int coluna = 0; coluna < 10; coluna++){
+          Botoes[linha][coluna].setFocusable(false);
+
+          switch (matriz[linha][coluna]) {
+              case 1:
+                  Botoes[linha][coluna].setBackground(Color.decode("#d20000"));
+                  break;
+              case 2:
+                  Botoes[linha][coluna].setBackground(Color.decode("#1c52bb"));
+                  break;
+              case 3:
+                  Botoes[linha][coluna].setBackground(Color.decode("#019131"));
+                  break;
+              case 4:
+                  Botoes[linha][coluna].setBackground(Color.decode("#962879"));
+                  break;
+          }
+        }
+      }
+    }
+
+    // Construtor do tabuleiro do computador
+    public Tabuleiro(Jogar jogo, JButton[] botoesTiro){
+      this(jogo, jogo.getMatrizComputador()); // Chama o construtor da interface
+      this.botoesTiro = botoesTiro;
+      
+      // Estiliza o tabuleiro do computador
+      for (int linha = 0; linha < 10; linha++){
+        for (int coluna = 0; coluna < 10; coluna++){
+          Botoes[linha][coluna] = new Botao();
+          Botoes[linha][coluna].addActionListener(this);
+          Botoes[linha][coluna].setPreferredSize(new Dimension(40, 40));
+          Botoes[linha][coluna].setFont(new Font("Arial", Font.PLAIN, 8));
+          Botoes[linha][coluna].setFocusable(false);
+              
+          grid.add(Botoes[linha][coluna]);
+        }
+      }
     }
     
     public void oponente(Tabuleiro oponente) {
