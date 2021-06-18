@@ -18,15 +18,13 @@ public class Jogar {
     
     private int contadorRodadas = 0;
     private boolean jogoFinalizado = false;
-    
-    // Construtor para jogo aleatorio
-    public Jogar(String nomeJogador) {
-        SorteiaJogo sorteioJogador = new SorteiaJogo();
-        SorteiaJogo sorteioComputador = new SorteiaJogo();
-    
+
+    // Construtor que inicializa o jogo
+    public Jogar() {
         this.embJogador = new ArrayList<Embarcacao>();
         this.embComputador = new ArrayList<Embarcacao>();
-       
+
+        // Usando polimorfismo para criar array de Embarcacoes
         embJogador.add(new PortaAviao());
         embJogador.add(new Submarino());
         embJogador.add(new NavioEscolta());
@@ -39,6 +37,16 @@ public class Jogar {
         
         System.out.println("Embarcacoes embJogador = " + embJogador);
         System.out.println("Embarcacoes embComputador = " + embComputador);
+
+        // Inicializa o contador
+        this.inicializaContador();
+    }
+    
+    // Jogo aleatorio
+    public Jogar(String nomeJogador) {
+        this(); // Chama o construtor que inicializa o jogo
+        SorteiaJogo sorteioJogador = new SorteiaJogo();
+        SorteiaJogo sorteioComputador = new SorteiaJogo();
         
         // Retorna uma matriz de inteiros com 0, 1, 2, 3, 4
         this.matrizJogador = sorteioJogador.sortear(embJogador);
@@ -46,28 +54,12 @@ public class Jogar {
         
         // Define o nome do jogador
         jogador.setNome(nomeJogador);
-        this.inicializaContador();
     }
     
-    // Construtor para jogo definido
+    // Jogo definido
     public Jogar(String nomeJogador, int[][] matriz) {
+        this(); // Chama o construtor que inicializa o jogo
         SorteiaJogo sorteioComputador = new SorteiaJogo();
-    
-        this.embJogador = new ArrayList<Embarcacao>();
-        this.embComputador = new ArrayList<Embarcacao>();;
-       
-        embJogador.add(new PortaAviao());
-        embJogador.add(new Submarino());
-        embJogador.add(new NavioEscolta());
-        embJogador.add(new AviaoCaca());
-
-        embComputador.add(new PortaAviao());
-        embComputador.add(new Submarino());
-        embComputador.add(new NavioEscolta());
-        embComputador.add(new AviaoCaca());
-        
-        System.out.println("Embarcacoes embJogador = " + embJogador);
-        System.out.println("Embarcacoes embComputador = " + embComputador);
         
         // Retorna uma matriz de inteiros com 0, 1, 2, 3, 4
         this.matrizJogador = matriz;
@@ -75,7 +67,6 @@ public class Jogar {
         
         // Define o nome do jogador
         jogador.setNome(nomeJogador);    
-        this.inicializaContador();
     }
     
     private void inicializaContador() {

@@ -3,7 +3,6 @@ package batalhanaval;
 public class Submarino implements Embarcacao {
     private final String nomeEmbarcacao;
     private int tamanhoEmbarcacao;
-    private boolean statusEmbarcacao;
 
     public Submarino() {
         this.nomeEmbarcacao = "Submarino";

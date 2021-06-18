@@ -56,17 +56,17 @@ public class Tabuleiro extends JPanel implements ActionListener {
       }
 
       contentPane.add(grid);
-      add(contentPane);
+      this.add(contentPane);
     }
     
-    // Construtor do tabuleiro do jogador
+    // Tabuleiro do jogador
     public Tabuleiro(Jogar jogo){
       this(jogo, jogo.getMatrizJogador()); // Chama o construtor da interface
       
       // Estiliza o tabuleiro do jogador
       for (int linha = 0; linha < 10; linha++){
         for (int coluna = 0; coluna < 10; coluna++){
-          Botoes[linha][coluna].setFocusable(false);
+          Botoes[linha][coluna].setEnabled(false);
 
           switch (matriz[linha][coluna]) {
               case 1:
@@ -86,7 +86,7 @@ public class Tabuleiro extends JPanel implements ActionListener {
       }
     }
 
-    // Construtor do tabuleiro do computador
+    // Tabuleiro do computador
     public Tabuleiro(Jogar jogo, JButton[] botoesTiro){
       this(jogo, jogo.getMatrizComputador()); // Chama o construtor da interface
       this.botoesTiro = botoesTiro;
@@ -94,17 +94,16 @@ public class Tabuleiro extends JPanel implements ActionListener {
       // Estiliza o tabuleiro do computador
       for (int linha = 0; linha < 10; linha++){
         for (int coluna = 0; coluna < 10; coluna++){
-          Botoes[linha][coluna] = new Botao();
           Botoes[linha][coluna].addActionListener(this);
           Botoes[linha][coluna].setPreferredSize(new Dimension(40, 40));
           Botoes[linha][coluna].setFont(new Font("Arial", Font.PLAIN, 8));
-          Botoes[linha][coluna].setFocusable(false);
               
           grid.add(Botoes[linha][coluna]);
         }
       }
     }
     
+    // Getters para o tabuleiro do oponente e botoes de tiro
     public void oponente(Tabuleiro oponente) {
         this.tabOponente = oponente;
     }

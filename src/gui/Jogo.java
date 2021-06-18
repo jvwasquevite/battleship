@@ -162,6 +162,7 @@ public class Jogo extends JFrame implements ActionListener {
     public Jogo(String nomeJogador) {
       this(); // Chama o construtor da interface
       setTitle("Batalha Naval em Java ➜ Jogo Aleatorio");
+      this.nomeJogador = nomeJogador;
       
       // Instancia e inicializa um novo jogo
       jogo = new Jogar(nomeJogador);
