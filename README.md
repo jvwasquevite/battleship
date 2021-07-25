@@ -1,7 +1,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/jvwasquevite/battleship">
-    <img src="https://raw.githubusercontent.com/jvwasquevite/readme/main/logo.png?token=AMCADBC6EWPA6XJUKSPKSHLA7FU6W" alt="Logo">
+    <img src="https://jvwasquevite.com/github/logo.png" alt="Logo">
   </a>
 
   <h3 align="center">Battleship</h3>
