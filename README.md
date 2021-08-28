@@ -9,7 +9,7 @@
   <p align="center">
     Battleship game developed with Java
     <br />
-    <a href="https://jvdwasquevite.notion.site/Programa-o-Orientada-a-Objetos-eb6f21ddf7fb417494f9f06d1246ac7c"><strong>Explore documentation »</strong></a>
+    <a href="https://jvwasquevite.notion.site/Programa-o-Orientada-a-Objetos-eb6f21ddf7fb417494f9f06d1246ac7c"><strong>Explore documentation »</strong></a>
     <br />
     <br />
     <a href="https://github.com/jvwasquevite/battleship/issues">Report Bug</a>
